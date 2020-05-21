@@ -50,7 +50,7 @@ ratherhttp.onload = function(){
   if (ratherhttp.status >= 200 && ratherhttp.status < 400) {
     var question = data.title;
     question[0] = question[0].toUpperCase();
-    ratherChannel.send(question + "\n😬 " + data.choicea + "\nOR\n😒 " + data.choiceb + "\nReact with your answer!");
+    ratherChannel.send(question + ":\n\n😬 " + data.choicea + "\nOR\n😒 " + data.choiceb + "\n\nReact with your answer!");
   }
   else {
     console.log('error');
