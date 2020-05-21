@@ -45,9 +45,12 @@ moviehttp.onload = function(){
 
 ratherhttp.onload = function(){
   var data = JSON.parse(this.response);
+  var question;
 
   if (ratherhttp.status >= 200 && ratherhttp.status < 400) {
-    ratherChannel.send(data.title + "\n😬 " + data.choicea + "\nOR\n😒 " + data.choiceb + "\nReact with your answer!");
+    var question = data.title;
+    question[0] = question[0].toUpperCase();
+    ratherChannel.send(question + "\n😬 " + data.choicea + "\nOR\n😒 " + data.choiceb + "\nReact with your answer!");
   }
   else {
     console.log('error');
