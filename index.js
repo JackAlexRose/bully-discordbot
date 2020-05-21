@@ -1,37 +1,58 @@
 var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-let xhttp = new XMLHttpRequest();
-var channel;
+let moviehttp = new XMLHttpRequest();
+let ratherhttp = new XMLHttpRequest();
+var movieChannel, ratherChannel;
+var url;
 
 client.once('ready', () => {
-	console.log('Ready!');
+	console.log('Client ready!');
 });
 
 client.on('message', message => {
     if(message.content.startsWith(`-movie `)){
-        var url = "http://www.omdbapi.com/?apikey="+ process.env.omdbkey + "&plot=full&t="
+        url = "http://www.omdbapi.com/?apikey="+ process.env.omdbkey + "&plot=full&t="
         var request = message.content.slice(7);
 
         request = request.replace(/ /g, "+");
         url = url + request;
 
-        channel = message.channel;
+        movieChannel = message.channel;
 
-        xhttp.open('GET', url, true);
-        xhttp.send();
+        moviehttp.open('GET', url, true);
+        moviehttp.send();
+    }
+    else if(message.content.startsWith(`-rather`)){
+        url = "https://www.rrrather.com/botapi";
+        ratherChannel = message.channel;
+
+        ratherhttp.open('GET', url, true);
+        ratherhttp.send();
     }
 })
 
-xhttp.onload = function(){
+moviehttp.onload = function(){
     // Begin accessing JSON data here
   var data = JSON.parse(this.response);
 
-  if (xhttp.status >= 200 && xhttp.status < 400) {
-    channel.send("Title: " + data.Title + "\nYear: " + data.Year + "\nDirector: " + data.Director + "\nGenre: " + data.Genre + "\nCast: " + data.Actors + "\nRuntime: " + data.Runtime + "\nLanguage: " + data.Language + "\nPlot: " + data.Plot + "\n" + data.Poster);
+  if (moviehttp.status >= 200 && moviehttp.status < 400) {
+    movieChannel.send("Title: " + data.Title + "\nYear: " + data.Year + "\nDirector: " + data.Director + "\nGenre: " + data.Genre + "\nCast: " + data.Actors + "\nRuntime: " + data.Runtime + "\nLanguage: " + data.Language + "\nPlot: " + data.Plot + "\n" + data.Poster);
     } else {
     console.log('error');
   }
+}
+
+ratherhttp.onload = function(){
+  var data = JSON.parse(this.response);
+
+  if (ratherhttp.status >= 200 && ratherhttp.status < 400) {
+    ratherChannel.send("Would you rather \n😬 " + data.choicea + "\nOR\n😒 " + data.choiceb + "\nReact with your answer!");
+  }
+  else {
+    console.log('error');
+  }
+
 }
 
 client.login(process.env.token);
