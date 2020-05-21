@@ -47,7 +47,7 @@ ratherhttp.onload = function(){
   var data = JSON.parse(this.response);
 
   if (ratherhttp.status >= 200 && ratherhttp.status < 400) {
-    ratherChannel.send("Would you rather \n😬 " + data.choicea + "\nOR\n😒 " + data.choiceb + "\nReact with your answer!");
+    ratherChannel.send(data.title + "\n😬 " + data.choicea + "\nOR\n😒 " + data.choiceb + "\nReact with your answer!");
   }
   else {
     console.log('error');
