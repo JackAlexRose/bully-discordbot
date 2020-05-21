@@ -1,6 +1,5 @@
 var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
-// const { prefix, token, omdbkey } = require('./config.json');
 const client = new Discord.Client();
 let xhttp = new XMLHttpRequest();
 var channel;
@@ -18,8 +17,6 @@ client.on('message', message => {
         url = url + request;
 
         channel = message.channel;
-
-        // message.channel.send("Hey Searching for movie '" + request + "', POST URL will be: " + url);
 
         xhttp.open('GET', url, true);
         xhttp.send();
