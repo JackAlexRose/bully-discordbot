@@ -11,7 +11,7 @@ client.once('ready', () => {
 });
 
 client.on('message', message => {
-    if(message.content.startsWith(`-movie `)||message.content.startsWith(`-Movie `)){
+    if(message.content.toUpperCase().startsWith(`-MOVIE `)){
         url = "http://www.omdbapi.com/?apikey="+ process.env.omdbkey + "&plot=full&t="
         var request = message.content.slice(7);
 
@@ -23,14 +23,14 @@ client.on('message', message => {
         moviehttp.open('GET', url, true);
         moviehttp.send();
     }
-    else if(message.content.startsWith(`-rather`)||message.content.startsWith(`-Rather`)||message.content.startsWith(`-wyr`)||message.content.startsWith(`-Wyr`)||message.content.startsWith(`-WYR`)){
+    else if(message.content.toUpperCase().startsWith(`-RATHER`)||message.content.toUpperCase().startsWith(`-WYR`)){
         url = "https://www.rrrather.com/botapi";
         ratherChannel = message.channel;
 
         ratherhttp.open('GET', url, true);
         ratherhttp.send();
     }
-    else if(message.content.startsWith(`-bulldogs`)||message.content.startsWith(`-Bulldogs`)||message.content.startsWith(`-BULLDOGS`)){
+    else if(message.content.toUpperCase().startsWith(`-BULLDOGS`)){
       message.channel.send("RUF RUF");
     }
 })
