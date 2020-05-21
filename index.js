@@ -30,6 +30,9 @@ client.on('message', message => {
         ratherhttp.open('GET', url, true);
         ratherhttp.send();
     }
+    else if(message.content.startsWith(`-bulldogs`)){
+      message.channel.send("RUF RUF");
+    }
 })
 
 moviehttp.onload = function(){
