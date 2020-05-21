@@ -23,7 +23,7 @@ client.on('message', message => {
         moviehttp.open('GET', url, true);
         moviehttp.send();
     }
-    else if(message.content.startsWith(`-rather`)||message.content.startsWith(`-Rather`)){
+    else if(message.content.startsWith(`-rather`)||message.content.startsWith(`-Rather`)||message.content.startsWith(`-wyr`)||message.content.startsWith(`-Wyr`)||message.content.startsWith(`-WYR`)){
         url = "https://www.rrrather.com/botapi";
         ratherChannel = message.channel;
 
