@@ -80,9 +80,9 @@ ratherHttp.onload = function(){
 codTokenRequest.onload = function(){
   console.log('Hi test success');
   //var data = JSON.parse(this.response);
-
-  codChannel.send(this.responseText);
-  console.log(this.responseText);
+  var csrf = this.response.querySelector('meta[name="_csrf"]').getAttribute('content');
+  //codChannel.send(this.responseText);
+  console.log(csrf);
 }
 
 Client.login(process.env.token);
