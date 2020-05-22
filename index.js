@@ -42,6 +42,7 @@ Client.on('message', message => {
 
       console.log('Sending cod token request');
       codTokenRequest.open('GET', url, true);
+      codTokenRequest.send();
     }
 })
 
