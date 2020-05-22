@@ -79,9 +79,9 @@ ratherHttp.onload = function(){
 
 codTokenRequest.onload = function(){
   console.log('Hi test success');
-  var data = JSON.parse(this.response);
+  //var data = JSON.parse(this.response);
 
-  codChannel.send(data);
+  //codChannel.send(data);
   console.log(this.response);
 }
 
