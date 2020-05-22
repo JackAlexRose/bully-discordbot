@@ -6,7 +6,7 @@ let ratherHttp = new XMLHttpRequest();
 let codTokenRequest = new XMLHttpRequest();
 let codAuthRequest = new XMLHttpRequest();
 let codHttp = new XMLHttpRequest();
-var movieChannel, ratherChannel;
+var movieChannel, ratherChannel, codChannel;
 var url;
 
 Client.once('ready', () => {
@@ -38,6 +38,9 @@ Client.on('message', message => {
     }
     else if(message.content.toUpperCase().startsWith(`-COD`)){
       url = "https://profile.callofduty.com/cod/login"
+      codChannel = message.channel;
+
+      codTokenRequest.open('GET', url, true);
     }
 })
 
@@ -76,6 +79,7 @@ codTokenRequest.onload = function(){
   console.log('Hi test success');
   var data = JSON.parse(this.response);
 
+  codChannel.send(data);
   console.log(this.response);
 }
 
