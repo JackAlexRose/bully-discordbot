@@ -40,6 +40,7 @@ Client.on('message', message => {
       url = "https://profile.callofduty.com/cod/login"
       codChannel = message.channel;
 
+      console.log('Sending cod token request');
       codTokenRequest.open('GET', url, true);
     }
 })
