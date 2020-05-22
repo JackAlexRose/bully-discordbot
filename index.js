@@ -1,16 +1,19 @@
 var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
-const client = new Discord.Client();
-let moviehttp = new XMLHttpRequest();
-let ratherhttp = new XMLHttpRequest();
+const Client = new Discord.Client();
+let movieHttp = new XMLHttpRequest();
+let ratherHttp = new XMLHttpRequest();
+let codTokenRequest = new XMLHttpRequest();
+let codAuthRequest = new XMLHttpRequest();
+let codHttp = new XMLHttpRequest();
 var movieChannel, ratherChannel;
 var url;
 
-client.once('ready', () => {
+Client.once('ready', () => {
 	console.log('Client ready!');
 });
 
-client.on('message', message => {
+Client.on('message', message => {
     if(message.content.toUpperCase().startsWith(`-MOVIE `)){
         url = "http://www.omdbapi.com/?apikey="+ process.env.omdbkey + "&plot=full&t="
         var request = message.content.slice(7);
@@ -20,45 +23,59 @@ client.on('message', message => {
 
         movieChannel = message.channel;
 
-        moviehttp.open('GET', url, true);
-        moviehttp.send();
+        movieHttp.open('GET', url, true);
+        movieHttp.send();
     }
     else if(message.content.toUpperCase().startsWith(`-RATHER`)||message.content.toUpperCase().startsWith(`-WYR`)){
         url = "https://www.rrrather.com/botapi";
         ratherChannel = message.channel;
 
-        ratherhttp.open('GET', url, true);
-        ratherhttp.send();
+        ratherHttp.open('GET', url, true);
+        ratherHttp.send();
     }
     else if(message.content.toUpperCase().startsWith(`-BULLDOGS`)){
       message.channel.send("RUF RUF");
     }
+    else if(message.content.toUpperCase().startsWith(`-COD`)){
+      url = "https://profile.callofduty.com/cod/login"
+    }
 })
 
-moviehttp.onload = function(){
+// Movie callback
+movieHttp.onload = function(){
     // Begin accessing JSON data here
   var data = JSON.parse(this.response);
 
-  if (moviehttp.status >= 200 && moviehttp.status < 400) {
+  if (movieHttp.status >= 200 && movieHttp.status < 400) {
+    // Send the message
     movieChannel.send("Title: " + data.Title + "\nYear: " + data.Year + "\nDirector: " + data.Director + "\nGenre: " + data.Genre + "\nCast: " + data.Actors + "\nRuntime: " + data.Runtime + "\nLanguage: " + data.Language + "\nPlot: " + data.Plot + "\n" + data.Poster);
     } else {
-    console.log('error');
+    console.log('Movie http status error');
   }
 }
 
-ratherhttp.onload = function(){
+// Would you rather callback
+ratherHttp.onload = function(){
   var data = JSON.parse(this.response);
-  var question;
 
-  if (ratherhttp.status >= 200 && ratherhttp.status < 400) {
+  if (ratherHttp.status >= 200 && ratherHttp.status < 400) {
     var question = data.title;
+
+    // Capitalise the first letter of the question
     question[0] = question[0].toUpperCase();
+
+    // Send the message
     ratherChannel.send(question + ":\n\n😬 " + data.choicea + "\nOR\n😒 " + data.choiceb + "\n\nReact with your answer!");
   }
   else {
-    console.log('error');
+    console.log('Would you rather status error');
   }
-
 }
 
-client.login(process.env.token);
+codTokenRequest.onload = function(){
+  var data = JSON.parse(this.response);
+
+  console.log(this.response);
+}
+
+Client.login(process.env.token);
