@@ -82,8 +82,8 @@ codTokenRequest.onload = function(){
   console.log('Hi test success');
   //console.log(this.responseText);
   //var data = JSON.parse(this.response);
-  var csrf = this.response.filter(`meta name="_csrf"`).attr("content");
-  //var csrf = this.getResponseHeader('_csrf');
+
+  var csrf = this.getResponseHeader('_csrf');
   //codChannel.send(csrf);
   console.log(csrf);
 }
