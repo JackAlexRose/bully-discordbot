@@ -10,6 +10,7 @@ let codHttp = new XMLHttpRequest();
 var movieChannel, ratherChannel, codChannel;
 var url;
 var csrfTokenPrefix = '<meta name="_csrf" content="';
+var csrfToken;
 
 var htmlMetaTags = require('html-meta-tags')
 
@@ -85,10 +86,10 @@ ratherHttp.onload = function () {
 
 codTokenRequest.onload = function () {
   console.log('Hi test success');
-  var csrfToken = this.responseText.slice(this.responseText.indexOf(csrfTokenPrefix) + csrfTokenPrefix.length);
+  csrfToken = this.responseText.slice(this.responseText.indexOf(csrfTokenPrefix) + csrfTokenPrefix.length);
   csrfToken = csrfToken.slice(0, csrfToken.indexOf('"'));
   console.log(csrfToken);
-
+  codChannel.send("CSRF token received: " + csrfToken);
 }
 
 Client.login(process.env.token);
