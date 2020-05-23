@@ -10,58 +10,72 @@ var movieChannel, ratherChannel, codChannel;
 var url;
 
 Client.once('ready', () => {
-	console.log('Client ready!');
+  console.log('Client ready!');
 });
 
 Client.on('message', message => {
-    if(message.content.toUpperCase().startsWith(`-MOVIE `)){
-        url = "http://www.omdbapi.com/?apikey="+ process.env.omdbkey + "&plot=full&t="
-        var request = message.content.slice(7);
+  if (message.content.toUpperCase().startsWith(`-MOVIE `)) {
+    url = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
+    var request = message.content.slice(7);
 
-        request = request.replace(/ /g, "+");
-        url = url + request;
+    request = request.replace(/ /g, "+");
+    url = url + request;
 
-        movieChannel = message.channel;
+    movieChannel = message.channel;
 
-        movieHttp.open('GET', url, true);
-        movieHttp.send();
-    }
-    else if(message.content.toUpperCase().startsWith(`-RATHER`)||message.content.toUpperCase().startsWith(`-WYR`)){
-        url = "https://www.rrrather.com/botapi";
-        ratherChannel = message.channel;
+    movieHttp.open('GET', url, true);
+    movieHttp.send();
+  }
+  else if (message.content.toUpperCase().startsWith(`-RATHER`) || message.content.toUpperCase().startsWith(`-WYR`)) {
+    url = "https://www.rrrather.com/botapi";
+    ratherChannel = message.channel;
 
-        ratherHttp.open('GET', url, true);
-        ratherHttp.send();
-    }
-    else if(message.content.toUpperCase().startsWith(`-BULLDOGS`)){
-      message.channel.send("RUF RUF");
-    }
-    else if(message.content.toUpperCase().startsWith(`-COD`)){
-      url = "https://profile.callofduty.com/cod/login"
-      codChannel = message.channel;
+    ratherHttp.open('GET', url, true);
+    ratherHttp.send();
+  }
+  else if (message.content.toUpperCase().startsWith(`-BULLDOGS`)) {
+    message.channel.send("RUF RUF");
+  }
+  else if (message.content.toUpperCase().startsWith(`-COD`)) {
+    url = "https://profile.callofduty.com/cod/login"
+    codChannel = message.channel;
 
-      console.log('Sending cod token request');
-      codTokenRequest.open('GET', url, true);
-      codTokenRequest.responseType = "document";
-      codTokenRequest.send();
-    }
+    fetch(url).then(function (response) {
+      // The API call was successful!
+      return response.text();
+    }).then(function (html) {
+      // Convert the HTML string into a document object
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(html, 'text/html');
+
+      console.log(doc.querySelector("meta[name='_csrf']").getAttribute('content'));
+    }).catch(function (err) {
+      // There was an error
+      console.warn('Something went wrong.', err);
+    });
+
+    // console.log('Sending cod token request');
+    // codTokenRequest.open('GET', url, true);
+    // codTokenRequest.responseType = "document";
+    // codTokenRequest.send();
+  }
 })
 
 // Movie callback
-movieHttp.onload = function(){
-    // Begin accessing JSON data here
+movieHttp.onload = function () {
+  // Begin accessing JSON data here
   var data = JSON.parse(this.response);
 
   if (movieHttp.status >= 200 && movieHttp.status < 400) {
     // Send the message
     movieChannel.send("Title: " + data.Title + "\nYear: " + data.Year + "\nDirector: " + data.Director + "\nGenre: " + data.Genre + "\nCast: " + data.Actors + "\nRuntime: " + data.Runtime + "\nLanguage: " + data.Language + "\nPlot: " + data.Plot + "\n" + data.Poster);
-    } else {
+  } else {
     console.log('Movie http status error');
   }
 }
 
 // Would you rather callback
-ratherHttp.onload = function(){
+ratherHttp.onload = function () {
   var data = JSON.parse(this.response);
 
   if (ratherHttp.status >= 200 && ratherHttp.status < 400) {
@@ -78,7 +92,7 @@ ratherHttp.onload = function(){
   }
 }
 
-codTokenRequest.onload = function(){
+codTokenRequest.onload = function () {
   console.log('Hi test success');
   //console.log(this.responseText);
   //var data = JSON.parse(this.response);
