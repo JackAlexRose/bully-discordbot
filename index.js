@@ -2,7 +2,8 @@ var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
 var FormData = require('form-data');
-const request = require('request');
+const Request = require('request');
+const CodApi = require('call-of-duty-api')({ platform: "uno" });
 const Client = new Discord.Client();
 let movieHttp = new XMLHttpRequest();
 let ratherHttp = new XMLHttpRequest();
@@ -44,27 +45,25 @@ Client.on('message', async message => {
   else if (message.content.toUpperCase().startsWith(`-BULLDOGS`)) {
     message.channel.send("RUF RUF");
   }
-  else if (message.content.toUpperCase().startsWith(`-COD`)) {
-    // url = "https://profile.callofduty.com/cod/login"
-    // codChannel = message.channel;
-
-    // console.log('Sending cod token request');
-    // codTokenRequest.open('GET', url, true);
-    // codTokenRequest.responseType = "document";
-    // codTokenRequest.send();
-
-    const API = require('call-of-duty-api')({ platform: "uno" });
-
-    API.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
+  else if (message.content.toUpperCase().startsWith(`-COD FRIENDS`)) {
+    CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       //I want Warzone Data
-    API.MWwz('PLAGUESPITTER#3141115').then(data => {
+    CodApi.MWfriends('PLAGUESPITTER#3141115').then(data => {
       console.log(data);  // see output
     }).catch(err => {
       console.log(err);
     });
     })
-
-    
+  }
+  else if (message.content.toUpperCase().startsWith(`-COD`)) {
+    CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
+      //I want Warzone Data
+    CodApi.MWwz('PLAGUESPITTER#3141115').then(data => {
+      console.log(data);  // see output
+    }).catch(err => {
+      console.log(err);
+    });
+    })
   }
 })
 
@@ -121,7 +120,7 @@ codTokenRequest.onload = function () {
       '_csrf': `${csrfToken}`
     }
   };
-  request(options, function (error, response) {
+  Request(options, function (error, response) {
     if (error) throw new Error(error);
     console.log(response.body);
   });
