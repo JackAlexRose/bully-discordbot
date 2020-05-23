@@ -58,7 +58,7 @@ Client.on('message', async message => {
   else if (message.content.toUpperCase().startsWith(`-COD`)) {
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       //I want Warzone Data
-    CodApi.MWwz('PLAGUESPITTER#3141115').then(data => {
+    CodApi.MWwz('4NALFiend#5639693').then(data => {
       console.log(data);  // see output
     }).catch(err => {
       console.log(err);
