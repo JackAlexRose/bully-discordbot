@@ -80,7 +80,6 @@ Client.on('message', async message => {
         for (let key in data){
           usernames[key] = data[key].username;
           CodApi.MWwz(username).then(result => {
-            console.log(result);
             result.br.title = usernames[key];
             people.push(result.br);
 
