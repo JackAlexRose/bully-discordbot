@@ -50,19 +50,25 @@ Client.on('message', async message => {
     var brStats;
 
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
+      var people = [];
+
       //I want Warzone Data
       CodApi.MWwz(MyActivisionName).then(data => {
-        brStats = data.br;
-        brStats.title = MyActivisionName;
-        console.log(brStats);
+        data.br.title = MyActivisionName;
+        people.push(data.br);
+        // brStats = data.br;
+        // brStats.title = MyActivisionName;
+        //console.log(people);
       }).catch(err => {
         console.log(err);
       });
 
       CodApi.MWwz('4NALFiend#5639693').then(data => {
         data.br.title = '4NALFiend#5639693';
-        brStats.concat(data.br);
-        console.log('---------------------\n' + brStats);
+        people.push(data.br);
+        console.log(people);
+        // brStats.concat(data.br);
+        // console.log('---------------------\n' + brStats);
       }).catch(err => {
         console.log(err);
       });
