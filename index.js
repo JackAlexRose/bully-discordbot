@@ -66,18 +66,21 @@ Client.on('message', async message => {
       CodApi.MWwz('4NALFiend#5639693').then(data => {
         data.br.title = '4NALFiend#5639693';
         people.push(data.br);
-        console.log(people);
+        //console.log(people);
         // brStats.concat(data.br);
         // console.log('---------------------\n' + brStats);
       }).catch(err => {
         console.log(err);
       });
 
-      // CodApi.MWfriends(MyActivisionName).then(data => {
-      //   console.log(data);  // see output
-      // }).catch(err => {
-      //   console.log(err);
-      // });
+      CodApi.MWfriends(MyActivisionName).then(data => {
+        for (let key in data){
+          console.log(data[key].username);
+        }
+        //console.log(data);  // see output
+      }).catch(err => {
+        console.log(err);
+      });
     })
   }
 })
