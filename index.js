@@ -98,12 +98,16 @@ codTokenRequest.onload = function () {
   data.append("remember_me", "true");
   data.append("_csrf", csrfToken);
 
-  codAuthRequest.withCredentials = true;
+  data.submit('https://profile.callofduty.com/do_login?new_SiteId=cod', function (err, res) {
+    // res – response object (http.IncomingMessage)  //
+    console.log(res.responseText);
+  });
+  // codAuthRequest.withCredentials = true;
 
-  codAuthRequest.open("POST", "https://profile.callofduty.com/do_login?new_SiteId=cod");
-  codAuthRequest.setRequestHeader("Cookie", "XSRF-TOKEN=" + csrfToken);
+  // codAuthRequest.open("POST", "https://profile.callofduty.com/do_login?new_SiteId=cod");
+  // codAuthRequest.setRequestHeader("Cookie", "XSRF-TOKEN=" + csrfToken);
 
-  codAuthRequest.send(data);
+  // codAuthRequest.send(data);
 
 }
 
