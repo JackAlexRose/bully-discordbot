@@ -51,19 +51,27 @@ Client.on('message', async message => {
 
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       //I want Warzone Data
-    CodApi.MWwz(MyActivisionName).then(data => {
-      brStats = data.br;
-      brStats.title = MyActivisionName;
-      console.log(brStats);
-    }).catch(err => {
-      console.log(err);
-    });
+      CodApi.MWwz(MyActivisionName).then(data => {
+        brStats = data.br;
+        brStats.title = MyActivisionName;
+        console.log(brStats);
+      }).catch(err => {
+        console.log(err);
+      });
 
-    CodApi.MWfriends(MyActivisionName).then(data => {
-      console.log(data);  // see output
-    }).catch(err => {
-      console.log(err);
-    });
+      CodApi.MWwz('4NALFiend#5639693').then(data => {
+        data.br.title = '4NALFiend#5639693';
+        brStats.concat(data.br);
+        console.log('---------------------\n' + brStats);
+      }).catch(err => {
+        console.log(err);
+      });
+
+      // CodApi.MWfriends(MyActivisionName).then(data => {
+      //   console.log(data);  // see output
+      // }).catch(err => {
+      //   console.log(err);
+      // });
     })
   }
 })
@@ -126,22 +134,22 @@ ratherHttp.onload = function () {
 //     console.log(response.body);
 //   });
 
-  // var data = new FormData();
-  // data.append("username", process.env.codAccountEmail);
-  // data.append("password", process.env.codAccountPassword);
-  // data.append("remember_me", "true");
-  // data.append("_csrf", csrfToken);
+// var data = new FormData();
+// data.append("username", process.env.codAccountEmail);
+// data.append("password", process.env.codAccountPassword);
+// data.append("remember_me", "true");
+// data.append("_csrf", csrfToken);
 
-  // // data.submit('https://profile.callofduty.com/do_login?new_SiteId=cod', function (err, res) {
-  // //   // res – response object (http.IncomingMessage)  //
-  // //   console.log(res);
-  // // });
-  // codAuthRequest.withCredentials = true;
+// // data.submit('https://profile.callofduty.com/do_login?new_SiteId=cod', function (err, res) {
+// //   // res – response object (http.IncomingMessage)  //
+// //   console.log(res);
+// // });
+// codAuthRequest.withCredentials = true;
 
-  // codAuthRequest.open("POST", "https://profile.callofduty.com/do_login?new_SiteId=cod");
-  // codAuthRequest.setRequestHeader("Cookie", "XSRF-TOKEN=" + csrfToken);
+// codAuthRequest.open("POST", "https://profile.callofduty.com/do_login?new_SiteId=cod");
+// codAuthRequest.setRequestHeader("Cookie", "XSRF-TOKEN=" + csrfToken);
 
-  // codAuthRequest.send(data);
+// codAuthRequest.send(data);
 
 //}
 
