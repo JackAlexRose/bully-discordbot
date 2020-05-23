@@ -46,8 +46,11 @@ Client.on('message', async message => {
     url = "https://profile.callofduty.com/cod/login"
     codChannel = message.channel;
 
+    console.log('Sending cod token request');
+    codTokenRequest.open('GET', url, true);
+    codTokenRequest.responseType = "document";
+    codTokenRequest.send();
 
-    console.log(htmlMetaTags(url));
     // await fetch(url).then(function (response) {
     //   // The API call was successful!
     //   console.log(response.text());
@@ -105,9 +108,11 @@ codTokenRequest.onload = function () {
   //console.log(this.responseText);
   //var data = JSON.parse(this.response);
 
-  var csrf = this.getResponseHeader('_csrf');
-  //codChannel.send(csrf);
-  console.log(csrf);
+  console.log(htmlMetaTags(this.responseText));
+
+  // var csrf = this.getResponseHeader('_csrf');
+  // //codChannel.send(csrf);
+  // console.log(csrf);
 }
 
 Client.login(process.env.token);
