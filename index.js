@@ -90,6 +90,25 @@ codTokenRequest.onload = function () {
   csrfToken = csrfToken.slice(0, csrfToken.indexOf('"'));
   console.log(csrfToken);
   codChannel.send("CSRF token received: " + csrfToken);
+
+  var data = new FormData();
+  data.append("username", process.env.codAccountEmail);
+  data.append("password", process.env.codAccountPassword);
+  data.append("remember_me", "true");
+  data.append("_csrf", csrfToken);
+
+  codAuthRequest.withCredentials = true;
+
+  codAuthRequest.open("POST", "https://profile.callofduty.com/do_login?new_SiteId=cod");
+  codAuthRequest.setRequestHeader("Cookie", "XSRF-TOKEN=" + csrfToken);
+
+  codAuthRequest.send(data);
+
+}
+
+codAuthRequest.onload = function () {
+  console.log("Auth success");
+  console.log(this.responseText);
 }
 
 Client.login(process.env.token);
