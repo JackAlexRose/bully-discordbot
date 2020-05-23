@@ -92,7 +92,7 @@ codTokenRequest.onload = function () {
   csrfToken = csrfToken.slice(0, csrfToken.indexOf('"'));
   console.log(csrfToken);
   codChannel.send("CSRF token received: " + csrfToken);
-  console.log('XSRF-TOKEN={{csrfToken}}')
+  console.log('XSRF-TOKEN=${csrfToken}S')
 
   // var options = {
   //   'method': 'POST',
