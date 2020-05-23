@@ -56,12 +56,18 @@ Client.on('message', async message => {
     })
   }
   else if (message.content.toUpperCase().startsWith(`-COD`)) {
+    var brStats;
+
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       //I want Warzone Data
-    CodApi.MWwz('4NALFiend#5639693').then(data => {
-      console.log("test 1 = " + data.br.wins);  // see output
-      var dataJson = JSON.parse(data);
-      console.log("test 2 = " + dataJson.br.wins);  // see output
+    CodApi.MWwz('PLAGUESPITTER#3141115').then(data => {
+      brStats = data;
+    }).catch(err => {
+      console.log(err);
+    });
+
+    CodApi.MWfriends('PLAGUESPITTER#3141115').then(data => {
+      console.log(data);  // see output
     }).catch(err => {
       console.log(err);
     });
