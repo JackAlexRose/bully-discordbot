@@ -2,6 +2,7 @@ var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
 var DomParser = require('dom-parser');
+var parser = new DOMParser();
 const Client = new Discord.Client();
 let movieHttp = new XMLHttpRequest();
 let ratherHttp = new XMLHttpRequest();
@@ -47,7 +48,6 @@ Client.on('message', message => {
       return response.text();
     }).then(function (html) {
       // Convert the HTML string into a document object
-      var parser = new DOMParser();
       var doc = parser.parseFromString(html, 'text/html');
 
       console.log(doc.querySelector("meta[name='_csrf']").getAttribute('content'));
