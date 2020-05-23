@@ -1,8 +1,6 @@
 var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
-var DomParser = require('dom-parser');
-var parser = new DomParser();
 const Client = new Discord.Client();
 let movieHttp = new XMLHttpRequest();
 let ratherHttp = new XMLHttpRequest();
@@ -11,6 +9,7 @@ let codAuthRequest = new XMLHttpRequest();
 let codHttp = new XMLHttpRequest();
 var movieChannel, ratherChannel, codChannel;
 var url;
+var csrfTokenPrefix = '<meta name="_csrf" content="';
 
 var htmlMetaTags = require('html-meta-tags')
 
@@ -50,25 +49,6 @@ Client.on('message', async message => {
     codTokenRequest.open('GET', url, true);
     codTokenRequest.responseType = "document";
     codTokenRequest.send();
-
-    // await fetch(url).then(function (response) {
-    //   // The API call was successful!
-    //   console.log(response.text());
-    //   return response.text();
-    // }).then(function (html) {
-    //   // Convert the HTML string into a document object
-    //   var doc = parser.parseFromString(html, 'text/html');
-
-    //   console.log(doc.querySelector("meta[name='_csrf']").getAttribute('content'));
-    // }).catch(function (err) {
-    //   // There was an error
-    //   console.warn('Something went wrong.', err);
-    // });
-
-    // console.log('Sending cod token request');
-    // codTokenRequest.open('GET', url, true);
-    // codTokenRequest.responseType = "document";
-    // codTokenRequest.send();
   }
 })
 
@@ -105,12 +85,10 @@ ratherHttp.onload = function () {
 
 codTokenRequest.onload = function () {
   console.log('Hi test success');
-  console.log(this.responseText);
-  //var data = JSON.parse(this.response);
+  var csrfToken = this.responseText.slice(this.responseText.indexOf(csrfTokenPrefix) + csrfTokenPrefix.length);
+  csrfToken = csrfToken.slice(0, csrfToken.indexOf('"'));
+  console.log(csrfToken);
 
-  // var csrf = this.getResponseHeader('_csrf');
-  // //codChannel.send(csrf);
-  // console.log(csrf);
 }
 
 Client.login(process.env.token);
