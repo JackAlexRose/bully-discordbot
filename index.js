@@ -2,6 +2,7 @@ var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
 var FormData = require('form-data');
+const request = require('request');
 const Client = new Discord.Client();
 let movieHttp = new XMLHttpRequest();
 let ratherHttp = new XMLHttpRequest();
@@ -91,17 +92,36 @@ codTokenRequest.onload = function () {
   csrfToken = csrfToken.slice(0, csrfToken.indexOf('"'));
   console.log(csrfToken);
   codChannel.send("CSRF token received: " + csrfToken);
+  console.log('XSRF-TOKEN={{csrfToken}}')
 
-  var data = new FormData();
-  data.append("username", process.env.codAccountEmail);
-  data.append("password", process.env.codAccountPassword);
-  data.append("remember_me", "true");
-  data.append("_csrf", csrfToken);
+  // var options = {
+  //   'method': 'POST',
+  //   'url': 'https://profile.callofduty.com/do_login?new_SiteId=cod',
+  //   'headers': {
+  //     'Cookie': 'XSRF-TOKEN={{XSRF-TOKEN}}'
+  //   },
+  //   formData: {
+  //     'username': '{{accountEmail}}',
+  //     'password': '{{accountPassword}}',
+  //     'remember_me': 'true',
+  //     '_csrf': '{{XSRF-TOKEN}}'
+  //   }
+  // };
+  // request(options, function (error, response) { 
+  //   if (error) throw new Error(error);
+  //   console.log(response.body);
+  // });
 
-  data.submit('https://profile.callofduty.com/do_login?new_SiteId=cod', function (err, res) {
-    // res – response object (http.IncomingMessage)  //
-    console.log(res);
-  });
+  // var data = new FormData();
+  // data.append("username", process.env.codAccountEmail);
+  // data.append("password", process.env.codAccountPassword);
+  // data.append("remember_me", "true");
+  // data.append("_csrf", csrfToken);
+
+  // // data.submit('https://profile.callofduty.com/do_login?new_SiteId=cod', function (err, res) {
+  // //   // res – response object (http.IncomingMessage)  //
+  // //   console.log(res);
+  // // });
   // codAuthRequest.withCredentials = true;
 
   // codAuthRequest.open("POST", "https://profile.callofduty.com/do_login?new_SiteId=cod");
