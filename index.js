@@ -97,7 +97,7 @@ codTokenRequest.onload = function () {
 
   var options = {
     'method': 'POST',
-    'url': 'https://profile.callofduty.com/do_login?new_SiteId=cod',
+    'url': 'https://profile.callofduty.com/login',
     'headers': {
       'Cookie': `XSRF-TOKEN=${csrfToken}`
     },
