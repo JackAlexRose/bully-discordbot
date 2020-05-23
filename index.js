@@ -1,7 +1,6 @@
 var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
-var scrape = require('html-metadata');
 var DomParser = require('dom-parser');
 var parser = new DomParser();
 const Client = new Discord.Client();
@@ -12,6 +11,9 @@ let codAuthRequest = new XMLHttpRequest();
 let codHttp = new XMLHttpRequest();
 var movieChannel, ratherChannel, codChannel;
 var url;
+
+var htmlMetaTags = require('html-meta-tags')
+
 
 Client.once('ready', () => {
   console.log('Client ready!');
@@ -44,10 +46,8 @@ Client.on('message', async message => {
     url = "https://profile.callofduty.com/cod/login"
     codChannel = message.channel;
 
-    scrape(url).then(function(metadata){
-      console.log(metadata);
-  });
 
+    console.log(htmlMetaTags(url));
     // await fetch(url).then(function (response) {
     //   // The API call was successful!
     //   console.log(response.text());
