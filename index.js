@@ -54,12 +54,17 @@ Client.on('message', async message => {
     // codTokenRequest.send();
 
     const API = require('call-of-duty-api')({ platform: "battle" });
-    //I want Warzone Data
+
+    API.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
+      //I want Warzone Data
     API.MWwz('Lierrmm#2364').then(data => {
       console.log(data);  // see output
     }).catch(err => {
       console.log(err);
     });
+    })
+
+    
   }
 })
 
