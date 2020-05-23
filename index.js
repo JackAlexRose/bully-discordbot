@@ -59,7 +59,9 @@ Client.on('message', async message => {
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       //I want Warzone Data
     CodApi.MWwz('4NALFiend#5639693').then(data => {
-      console.log(data.wins);  // see output
+      console.log("test 1 = " + data.br.wins);  // see output
+      var dataJson = JSON.parse(data);
+      console.log("test 2 = " + dataJson.br.wins);  // see output
     }).catch(err => {
       console.log(err);
     });
