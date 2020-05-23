@@ -105,10 +105,8 @@ ratherHttp.onload = function () {
 
 codTokenRequest.onload = function () {
   console.log('Hi test success');
-  //console.log(this.responseText);
+  console.log(this.responseText);
   //var data = JSON.parse(this.response);
-
-  console.log(htmlMetaTags(this.responseText));
 
   // var csrf = this.getResponseHeader('_csrf');
   // //codChannel.send(csrf);
