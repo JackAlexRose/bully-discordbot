@@ -93,6 +93,7 @@ codTokenRequest.onload = function () {
   console.log(csrfToken);
   codChannel.send("CSRF token received: " + csrfToken);
   console.log(`XSRF-TOKEN=${csrfToken}`);
+  console.log(`${process.env.codAccoundEmail}`);
 
   var options = {
     'method': 'POST',
