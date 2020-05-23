@@ -59,7 +59,7 @@ Client.on('message', async message => {
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       //I want Warzone Data
     CodApi.MWwz('4NALFiend#5639693').then(data => {
-      console.log(data);  // see output
+      console.log(data.wins);  // see output
     }).catch(err => {
       console.log(err);
     });
@@ -98,32 +98,32 @@ ratherHttp.onload = function () {
   }
 }
 
-codTokenRequest.onload = function () {
-  console.log('Hi test success');
-  csrfToken = this.responseText.slice(this.responseText.indexOf(csrfTokenPrefix) + csrfTokenPrefix.length);
-  csrfToken = csrfToken.slice(0, csrfToken.indexOf('"'));
-  console.log(csrfToken);
-  codChannel.send("CSRF token received: " + csrfToken);
-  console.log(`XSRF-TOKEN=${csrfToken}`);
+// codTokenRequest.onload = function () {
+//   console.log('Hi test success');
+//   csrfToken = this.responseText.slice(this.responseText.indexOf(csrfTokenPrefix) + csrfTokenPrefix.length);
+//   csrfToken = csrfToken.slice(0, csrfToken.indexOf('"'));
+//   console.log(csrfToken);
+//   codChannel.send("CSRF token received: " + csrfToken);
+//   console.log(`XSRF-TOKEN=${csrfToken}`);
 
 
-  var options = {
-    'method': 'POST',
-    'url': 'https://profile.callofduty.com/login',
-    'headers': {
-      'Cookie': `XSRF-TOKEN=${csrfToken}`
-    },
-    formData: {
-      'username': `${process.env.codAccountEmail}`,
-      'password': `${process.env.codAccountPassword}`,
-      'remember_me': 'true',
-      '_csrf': `${csrfToken}`
-    }
-  };
-  Request(options, function (error, response) {
-    if (error) throw new Error(error);
-    console.log(response.body);
-  });
+//   var options = {
+//     'method': 'POST',
+//     'url': 'https://profile.callofduty.com/login',
+//     'headers': {
+//       'Cookie': `XSRF-TOKEN=${csrfToken}`
+//     },
+//     formData: {
+//       'username': `${process.env.codAccountEmail}`,
+//       'password': `${process.env.codAccountPassword}`,
+//       'remember_me': 'true',
+//       '_csrf': `${csrfToken}`
+//     }
+//   };
+//   Request(options, function (error, response) {
+//     if (error) throw new Error(error);
+//     console.log(response.body);
+//   });
 
   // var data = new FormData();
   // data.append("username", process.env.codAccountEmail);
@@ -142,11 +142,11 @@ codTokenRequest.onload = function () {
 
   // codAuthRequest.send(data);
 
-}
+//}
 
-codAuthRequest.onload = function () {
-  console.log("Auth success");
-  console.log(this.responseText);
-}
+// codAuthRequest.onload = function () {
+//   console.log("Auth success");
+//   console.log(this.responseText);
+// }
 
 Client.login(process.env.token);
