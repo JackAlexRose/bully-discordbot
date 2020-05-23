@@ -93,7 +93,7 @@ codTokenRequest.onload = function () {
   console.log(csrfToken);
   codChannel.send("CSRF token received: " + csrfToken);
   console.log(`XSRF-TOKEN=${csrfToken}`);
-  console.log(`${process.env.codAccoundEmail}`);
+  console.log(`${process.env.codAccountEmail}`);
 
   var options = {
     'method': 'POST',
@@ -102,7 +102,7 @@ codTokenRequest.onload = function () {
       'Cookie': `XSRF-TOKEN=${csrfToken}`
     },
     formData: {
-      'username': `${process.env.codAccoundEmail}`,
+      'username': `${process.env.codAccountEmail}`,
       'password': `${process.env.codAccountPassword}`,
       'remember_me': 'true',
       '_csrf': `${csrfToken}`
