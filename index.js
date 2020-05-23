@@ -16,7 +16,7 @@ Client.once('ready', () => {
   console.log('Client ready!');
 });
 
-Client.on('message', message => {
+Client.on('message', async message => {
   if (message.content.toUpperCase().startsWith(`-MOVIE `)) {
     url = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
     var request = message.content.slice(7);
@@ -43,7 +43,7 @@ Client.on('message', message => {
     url = "https://profile.callofduty.com/cod/login"
     codChannel = message.channel;
 
-    fetch(url).then(function (response) {
+    await fetch(url).then(function (response) {
       // The API call was successful!
       console.log(response.text());
       return response.text();
