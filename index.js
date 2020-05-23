@@ -57,7 +57,7 @@ Client.on('message', async message => {
 
     API.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       //I want Warzone Data
-    API.MWfriends('PLAGUESPITTER#3141115').then(data => {
+    API.MWwz('PLAGUESPITTER#3141115').then(data => {
       console.log(data);  // see output
     }).catch(err => {
       console.log(err);
