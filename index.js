@@ -77,6 +77,7 @@ Client.on('message', async message => {
         for (let key in data){
           var username = data[key].username;
           CodApi.MWwz(username).then(result => {
+            console.log(result);
             result.br.title = username;
             people.push(result.br);
           }).catch(err => {
