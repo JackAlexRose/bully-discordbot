@@ -14,8 +14,9 @@ var movieChannel, ratherChannel, codChannel;
 var url;
 var csrfTokenPrefix = '<meta name="_csrf" content="';
 var csrfToken;
+const MyActivisionName = 'PLAGUESPITTER#3141115'
 
-var htmlMetaTags = require('html-meta-tags')
+var htmlMetaTags = require('html-meta-tags');
 
 
 Client.once('ready', () => {
@@ -45,29 +46,20 @@ Client.on('message', async message => {
   else if (message.content.toUpperCase().startsWith(`-BULLDOGS`)) {
     message.channel.send("RUF RUF");
   }
-  else if (message.content.toUpperCase().startsWith(`-COD FRIENDS`)) {
-    CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
-      //I want Warzone Data
-    CodApi.MWfriends('PLAGUESPITTER#3141115').then(data => {
-      console.log(data);  // see output
-    }).catch(err => {
-      console.log(err);
-    });
-    })
-  }
   else if (message.content.toUpperCase().startsWith(`-COD`)) {
     var brStats;
 
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       //I want Warzone Data
-    CodApi.MWwz('PLAGUESPITTER#3141115').then(data => {
-      brStats = data;
+    CodApi.MWwz(MyActivisionName).then(data => {
+      brStats = data.br;
+      brStats.title = MyActivisionName;
       console.log(brStats);
     }).catch(err => {
       console.log(err);
     });
 
-    CodApi.MWfriends('PLAGUESPITTER#3141115').then(data => {
+    CodApi.MWfriends(MyActivisionName).then(data => {
       console.log(data);  // see output
     }).catch(err => {
       console.log(err);
