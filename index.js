@@ -49,6 +49,8 @@ Client.on('message', async message => {
   else if (message.content.toUpperCase().startsWith(`-COD`)) {
     var brStats;
 
+    codChannel = message.channel;
+
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       var people = [];
       
