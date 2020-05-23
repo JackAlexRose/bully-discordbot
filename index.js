@@ -75,12 +75,13 @@ Client.on('message', async message => {
 
       CodApi.MWfriends(MyActivisionName).then(data => {
       var counter = data.length;
+      var usernames = [];
 
         for (let key in data){
-          var username = data[key].username;
+          usernames[key] = data[key].username;
           CodApi.MWwz(username).then(result => {
             console.log(result);
-            result.br.title = username;
+            result.br.title = usernames[key];
             people.push(result.br);
 
             counter--;
