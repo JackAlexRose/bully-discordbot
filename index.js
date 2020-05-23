@@ -98,13 +98,13 @@ codTokenRequest.onload = function () {
     'method': 'POST',
     'url': 'https://profile.callofduty.com/do_login?new_SiteId=cod',
     'headers': {
-      'Cookie': `XSRF-TOKEN=${csrfToken}`
+      'Cookie': `XSRF-TOKEN={{${csrfToken}}}`
     },
     formData: {
-      'username': `${process.env.codAccoundEmail}`,
-      'password': `${process.env.codAccountPassword}`,
+      'username': `{{${process.env.codAccoundEmail}}}`,
+      'password': `{{${process.env.codAccountPassword}}}`,
       'remember_me': 'true',
-      '_csrf': `${csrfToken}`
+      '_csrf': `{{${csrfToken}}}`
     }
   };
   request(options, function (error, response) { 
