@@ -100,7 +100,7 @@ codTokenRequest.onload = function () {
 
   data.submit('https://profile.callofduty.com/do_login?new_SiteId=cod', function (err, res) {
     // res – response object (http.IncomingMessage)  //
-    console.log(res.responseText);
+    console.log(res);
   });
   // codAuthRequest.withCredentials = true;
 
