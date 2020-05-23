@@ -92,25 +92,25 @@ codTokenRequest.onload = function () {
   csrfToken = csrfToken.slice(0, csrfToken.indexOf('"'));
   console.log(csrfToken);
   codChannel.send("CSRF token received: " + csrfToken);
-  console.log('XSRF-TOKEN=${csrfToken}S')
+  console.log(`XSRF-TOKEN=${csrfToken}`);
 
-  // var options = {
-  //   'method': 'POST',
-  //   'url': 'https://profile.callofduty.com/do_login?new_SiteId=cod',
-  //   'headers': {
-  //     'Cookie': 'XSRF-TOKEN={{XSRF-TOKEN}}'
-  //   },
-  //   formData: {
-  //     'username': '{{accountEmail}}',
-  //     'password': '{{accountPassword}}',
-  //     'remember_me': 'true',
-  //     '_csrf': '{{XSRF-TOKEN}}'
-  //   }
-  // };
-  // request(options, function (error, response) { 
-  //   if (error) throw new Error(error);
-  //   console.log(response.body);
-  // });
+  var options = {
+    'method': 'POST',
+    'url': 'https://profile.callofduty.com/do_login?new_SiteId=cod',
+    'headers': {
+      'Cookie': `XSRF-TOKEN=${csrfToken}`
+    },
+    formData: {
+      'username': `${process.env.codAccoundEmail}`,
+      'password': `${process.env.codAccountPassword}`,
+      'remember_me': 'true',
+      '_csrf': `${csrfToken}`
+    }
+  };
+  request(options, function (error, response) { 
+    if (error) throw new Error(error);
+    console.log(response.body);
+  });
 
   // var data = new FormData();
   // data.append("username", process.env.codAccountEmail);
