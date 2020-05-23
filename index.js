@@ -62,6 +62,7 @@ Client.on('message', async message => {
       //I want Warzone Data
     CodApi.MWwz('PLAGUESPITTER#3141115').then(data => {
       brStats = data;
+      console.log(brStats);
     }).catch(err => {
       console.log(err);
     });
