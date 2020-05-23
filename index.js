@@ -51,7 +51,7 @@ Client.on('message', async message => {
 
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       var people = [];
-
+      
       //I want Warzone Data
       CodApi.MWwz(MyActivisionName).then(data => {
         data.br.title = MyActivisionName;
@@ -74,18 +74,23 @@ Client.on('message', async message => {
       // });
 
       CodApi.MWfriends(MyActivisionName).then(data => {
+      var counter = data.length;
+
         for (let key in data){
           var username = data[key].username;
-          await CodApi.MWwz(username).then(result => {
+          CodApi.MWwz(username).then(result => {
             console.log(result);
             result.br.title = username;
             people.push(result.br);
+
+            counter--;
+            if(counter == 0){
+              console.log(people);
+            }
           }).catch(err => {
             console.log(err);
           });
         }
-        console.log(people);
-        //console.log(data);  // see output
       }).catch(err => {
         console.log(err);
       });
