@@ -54,24 +54,11 @@ Client.on('message', async message => {
       
       //I want Warzone Data
       CodApi.MWwz(MyActivisionName).then(data => {
-        data.br.title = MyActivisionName;
+        data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
         people.push(data.br);
-        // brStats = data.br;
-        // brStats.title = MyActivisionName;
-        //console.log(people);
       }).catch(err => {
         console.log(err);
       });
-
-      // CodApi.MWwz('4NALFiend#5639693').then(data => {
-      //   data.br.title = '4NALFiend#5639693';
-      //   people.push(data.br);
-      //   //console.log(people);
-      //   // brStats.concat(data.br);
-      //   // console.log('---------------------\n' + brStats);
-      // }).catch(err => {
-      //   console.log(err);
-      // });
 
       CodApi.MWfriends(MyActivisionName).then(data => {
       var counter = data.length;
@@ -80,12 +67,12 @@ Client.on('message', async message => {
         for (let key in data){
           usernames[key] = data[key].username;
           CodApi.MWwz(usernames[key]).then(result => {
-            result.br.title = usernames[key];
+            result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
             people.push(result.br);
 
             counter--;
             if(counter == 0){
-              console.log(people);
+              codCallback(people);
             }
           }).catch(err => {
             console.log(err);
@@ -129,55 +116,13 @@ ratherHttp.onload = function () {
   }
 }
 
-// codTokenRequest.onload = function () {
-//   console.log('Hi test success');
-//   csrfToken = this.responseText.slice(this.responseText.indexOf(csrfTokenPrefix) + csrfTokenPrefix.length);
-//   csrfToken = csrfToken.slice(0, csrfToken.indexOf('"'));
-//   console.log(csrfToken);
-//   codChannel.send("CSRF token received: " + csrfToken);
-//   console.log(`XSRF-TOKEN=${csrfToken}`);
+function codCallback(stats){
+  var codResponseMessage = "---------Warzone Kills---------\n";
 
-
-//   var options = {
-//     'method': 'POST',
-//     'url': 'https://profile.callofduty.com/login',
-//     'headers': {
-//       'Cookie': `XSRF-TOKEN=${csrfToken}`
-//     },
-//     formData: {
-//       'username': `${process.env.codAccountEmail}`,
-//       'password': `${process.env.codAccountPassword}`,
-//       'remember_me': 'true',
-//       '_csrf': `${csrfToken}`
-//     }
-//   };
-//   Request(options, function (error, response) {
-//     if (error) throw new Error(error);
-//     console.log(response.body);
-//   });
-
-// var data = new FormData();
-// data.append("username", process.env.codAccountEmail);
-// data.append("password", process.env.codAccountPassword);
-// data.append("remember_me", "true");
-// data.append("_csrf", csrfToken);
-
-// // data.submit('https://profile.callofduty.com/do_login?new_SiteId=cod', function (err, res) {
-// //   // res – response object (http.IncomingMessage)  //
-// //   console.log(res);
-// // });
-// codAuthRequest.withCredentials = true;
-
-// codAuthRequest.open("POST", "https://profile.callofduty.com/do_login?new_SiteId=cod");
-// codAuthRequest.setRequestHeader("Cookie", "XSRF-TOKEN=" + csrfToken);
-
-// codAuthRequest.send(data);
-
-//}
-
-// codAuthRequest.onload = function () {
-//   console.log("Auth success");
-//   console.log(this.responseText);
-// }
+  for(let key in stats){
+    codResponseMessage += stats[key].title + ": " + stats[key].kills + "\n";
+  }
+  codChannel.send(codResponseMessage);
+}
 
 Client.login(process.env.token);
