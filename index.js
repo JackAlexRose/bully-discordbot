@@ -76,7 +76,7 @@ Client.on('message', async message => {
       CodApi.MWfriends(MyActivisionName).then(data => {
         for (let key in data){
           var username = data[key].username;
-          CodApi.MWwz(username).then(result => {
+          await CodApi.MWwz(username).then(result => {
             console.log(result);
             result.br.title = username;
             people.push(result.br);
