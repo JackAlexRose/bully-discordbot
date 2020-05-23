@@ -45,13 +45,21 @@ Client.on('message', async message => {
     message.channel.send("RUF RUF");
   }
   else if (message.content.toUpperCase().startsWith(`-COD`)) {
-    url = "https://profile.callofduty.com/cod/login"
-    codChannel = message.channel;
+    // url = "https://profile.callofduty.com/cod/login"
+    // codChannel = message.channel;
 
-    console.log('Sending cod token request');
-    codTokenRequest.open('GET', url, true);
-    codTokenRequest.responseType = "document";
-    codTokenRequest.send();
+    // console.log('Sending cod token request');
+    // codTokenRequest.open('GET', url, true);
+    // codTokenRequest.responseType = "document";
+    // codTokenRequest.send();
+
+    const API = require('call-of-duty-api')({ platform: "battle" });
+    //I want Warzone Data
+    API.MWwz('Lierrmm#2364').then(data => {
+      console.log(data);  // see output
+    }).catch(err => {
+      console.log(err);
+    });
   }
 })
 
@@ -108,7 +116,7 @@ codTokenRequest.onload = function () {
       '_csrf': `${csrfToken}`
     }
   };
-  request(options, function (error, response) { 
+  request(options, function (error, response) {
     if (error) throw new Error(error);
     console.log(response.body);
   });
