@@ -53,7 +53,7 @@ Client.on('message', async message => {
     // codTokenRequest.responseType = "document";
     // codTokenRequest.send();
 
-    const API = require('call-of-duty-api')({ platform: "battle" });
+    const API = require('call-of-duty-api')({ platform: "uno" });
 
     API.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       //I want Warzone Data
