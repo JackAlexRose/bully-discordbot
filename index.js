@@ -45,6 +45,7 @@ Client.on('message', message => {
 
     fetch(url).then(function (response) {
       // The API call was successful!
+      console.log(response.text());
       return response.text();
     }).then(function (html) {
       // Convert the HTML string into a document object
