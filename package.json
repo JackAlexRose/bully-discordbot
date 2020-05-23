@@ -12,6 +12,7 @@
   "dependencies": {
     "discord.js": "^12.2.0",
     "dom-parser": "^0.1.6",
+    "html-metadata": "^1.7.1",
     "node-fetch": "^2.6.0",
     "xhr2": "^0.2.0"
   }

@@ -1,6 +1,7 @@
 var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
+var scrape = require('html-metadata');
 var DomParser = require('dom-parser');
 var parser = new DomParser();
 const Client = new Discord.Client();
@@ -43,19 +44,23 @@ Client.on('message', async message => {
     url = "https://profile.callofduty.com/cod/login"
     codChannel = message.channel;
 
-    await fetch(url).then(function (response) {
-      // The API call was successful!
-      console.log(response.text());
-      return response.text();
-    }).then(function (html) {
-      // Convert the HTML string into a document object
-      var doc = parser.parseFromString(html, 'text/html');
+    scrape(url).then(function(metadata){
+      console.log(metadata);
+  });
 
-      console.log(doc.querySelector("meta[name='_csrf']").getAttribute('content'));
-    }).catch(function (err) {
-      // There was an error
-      console.warn('Something went wrong.', err);
-    });
+    // await fetch(url).then(function (response) {
+    //   // The API call was successful!
+    //   console.log(response.text());
+    //   return response.text();
+    // }).then(function (html) {
+    //   // Convert the HTML string into a document object
+    //   var doc = parser.parseFromString(html, 'text/html');
+
+    //   console.log(doc.querySelector("meta[name='_csrf']").getAttribute('content'));
+    // }).catch(function (err) {
+    //   // There was an error
+    //   console.warn('Something went wrong.', err);
+    // });
 
     // console.log('Sending cod token request');
     // codTokenRequest.open('GET', url, true);
