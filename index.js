@@ -153,6 +153,7 @@ function codCallback(stats) {
       codResponseMessage = "---------Warzone K/D---------\n";
       stats.sort((a, b) => (a.kdRatio < b.kdRatio) ? 1 : -1);
       for (let key in stats) {
+        stats[key].kdRatio = Math.round((stats[key].kdRatio + Number.EPSILON) * 100) / 100
         codResponseMessage += stats[key].title + ": " + stats[key].kdRatio + "\n";
       }
       break;
