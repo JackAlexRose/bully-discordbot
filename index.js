@@ -14,7 +14,8 @@ var movieChannel, ratherChannel, codChannel;
 var url;
 var csrfTokenPrefix = '<meta name="_csrf" content="';
 var csrfToken;
-const MyActivisionName = 'PLAGUESPITTER#3141115'
+const MyActivisionName = 'PLAGUESPITTER#3141115';
+var codStatToTrack = 'kills';
 
 var htmlMetaTags = require('html-meta-tags');
 
@@ -47,13 +48,23 @@ Client.on('message', async message => {
     message.channel.send("RUF RUF");
   }
   else if (message.content.toUpperCase().startsWith(`-COD`)) {
+    if (message.content.toUpperCase().startsWith(`-COD KILLS`)) {
+      codStatToTrack = 'kills';
+    } else if (message.content.toUpperCase().startsWith(`-COD WINS`)) {
+      codStatToTrack = 'wins';
+    } else if (message.content.toUpperCase().startsWith(`-COD KD`)) {
+      codStatToTrack = 'kd';
+    } else if (message.content.toUpperCase().startsWith(`-COD DEATHS`)) {
+      codStatToTrack = 'deaths';
+    }
+
     var brStats;
 
     codChannel = message.channel;
 
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       var people = [];
-      
+
       //I want Warzone Data
       CodApi.MWwz(MyActivisionName).then(data => {
         data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
@@ -63,17 +74,17 @@ Client.on('message', async message => {
       });
 
       CodApi.MWfriends(MyActivisionName).then(data => {
-      var counter = data.length;
-      var usernames = [];
+        var counter = data.length;
+        var usernames = [];
 
-        for (let key in data){
+        for (let key in data) {
           usernames[key] = data[key].username;
           CodApi.MWwz(usernames[key]).then(result => {
             result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
             people.push(result.br);
 
             counter--;
-            if(counter == 0){
+            if (counter == 0) {
               codCallback(people);
             }
           }).catch(err => {
@@ -118,12 +129,29 @@ ratherHttp.onload = function () {
   }
 }
 
-function codCallback(stats){
-  var codResponseMessage = "---------Warzone Kills---------\n";
-
-  for(let key in stats){
-    codResponseMessage += stats[key].title + ": " + stats[key].kills + "\n";
+function codCallback(stats) {
+  var codResponseMessage;
+  switch (codStatToTrack) {
+    case "kills":
+      codResponseMessage = "---------Warzone Kills---------\n";
+      stats.sort((a, b) => (a.kills > b.kills) ? 1 : -1);
+      for (let key in stats) {
+        codResponseMessage += stats[key].title + ": " + stats[key].kills + "\n";
+      }
+      break;
+    case "wins":
+      codResponseMessage = "---------Warzone Wins---------\n";
+      break;
+    case "kd":
+      codResponseMessage = "---------Warzone K/D---------\n";
+      break;
+    case "deaths":
+      codResponseMessage = "---------Warzone Deaths---------\n";
+      break;
+    default:
+      console.log("Unrecognised stat: " + codStatToTrack);
   }
+
   codChannel.send(codResponseMessage);
 }
 
