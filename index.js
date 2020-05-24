@@ -56,6 +56,9 @@ Client.on('message', async message => {
       codStatToTrack = 'kd';
     } else if (message.content.toUpperCase().startsWith(`-COD DEATHS`)) {
       codStatToTrack = 'deaths';
+    } else {
+      message.channel.send("Usage is:\n-cod kills\n-cod wins\n-cod kd\n-cod deaths");
+      return;
     }
 
     var brStats;
@@ -134,19 +137,31 @@ function codCallback(stats) {
   switch (codStatToTrack) {
     case "kills":
       codResponseMessage = "---------Warzone Kills---------\n";
-      stats.sort((a, b) => (a.kills > b.kills) ? 1 : -1);
+      stats.sort((a, b) => (a.kills < b.kills) ? 1 : -1);
       for (let key in stats) {
         codResponseMessage += stats[key].title + ": " + stats[key].kills + "\n";
       }
       break;
     case "wins":
       codResponseMessage = "---------Warzone Wins---------\n";
+      stats.sort((a, b) => (a.wins < b.wins) ? 1 : -1);
+      for (let key in stats) {
+        codResponseMessage += stats[key].title + ": " + stats[key].wins + "\n";
+      }
       break;
     case "kd":
       codResponseMessage = "---------Warzone K/D---------\n";
+      stats.sort((a, b) => (a.kdRatio < b.kdRatio) ? 1 : -1);
+      for (let key in stats) {
+        codResponseMessage += stats[key].title + ": " + stats[key].kdRatio + "\n";
+      }
       break;
     case "deaths":
       codResponseMessage = "---------Warzone Deaths---------\n";
+      stats.sort((a, b) => (a.deaths < b.deaths) ? 1 : -1);
+      for (let key in stats) {
+        codResponseMessage += stats[key].title + ": " + stats[key].deaths + "\n";
+      }
       break;
     default:
       console.log("Unrecognised stat: " + codStatToTrack);
