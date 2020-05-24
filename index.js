@@ -2,23 +2,14 @@ var XMLHttpRequest = require('xhr2');
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
 var FormData = require('form-data');
-const Request = require('request');
 const CodApi = require('call-of-duty-api')({ platform: "uno" });
 const Client = new Discord.Client();
 let movieHttp = new XMLHttpRequest();
 let ratherHttp = new XMLHttpRequest();
-let codTokenRequest = new XMLHttpRequest();
-let codAuthRequest = new XMLHttpRequest();
-let codHttp = new XMLHttpRequest();
 var movieChannel, ratherChannel, codChannel;
 var url;
-var csrfTokenPrefix = '<meta name="_csrf" content="';
-var csrfToken;
 const MyActivisionName = 'PLAGUESPITTER#3141115';
 var codStatToTrack = 'kills';
-
-var htmlMetaTags = require('html-meta-tags');
-
 
 Client.once('ready', () => {
   console.log('Client ready!');
@@ -60,8 +51,6 @@ Client.on('message', async message => {
       message.channel.send("Usage is:\n-cod kills\n-cod wins\n-cod kd\n-cod deaths");
       return;
     }
-
-    var brStats;
 
     codChannel = message.channel;
 
@@ -153,6 +142,7 @@ function codCallback(stats) {
       codResponseMessage = "---------Warzone K/D---------\n";
       stats.sort((a, b) => (a.kdRatio < b.kdRatio) ? 1 : -1);
       for (let key in stats) {
+        // Round the k/d to 2dp
         stats[key].kdRatio = Math.round((stats[key].kdRatio + Number.EPSILON) * 100) / 100
         codResponseMessage += stats[key].title + ": " + stats[key].kdRatio + "\n";
       }
