@@ -102,7 +102,7 @@ Client.on('message', async message => {
         //I want MultiPlayer Data
         CodApi.MWmp(MyActivisionName).then(data => {
           //console.log(data.lifetime.all.properties);
-          console.log(data.lifetime.all);
+          console.log(data.lifetime);
           // data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
           // people.push(data.br);
         }).catch(err => {
