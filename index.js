@@ -55,8 +55,10 @@ Client.on('message', async message => {
       codStatToTrack = 'mpkd';
     } else if (message.content.toUpperCase().startsWith(`-COD MP DEATHS`)) {
       codStatToTrack = 'mpdeaths';
+    } else if (message.content.toUpperCase().startsWith(`-COD MP STREAK`)) {
+      codStatToTrack = 'mpstreak';
     } else {
-      message.channel.send("Usage is:\n-cod wz kills\n-cod wz wins\n-cod wz kd\n-cod wz deaths\n-cod mp kills\n-cod mp wins\n-cod mp kd\n-cod mp deaths");
+      message.channel.send("Usage is:\n-cod wz kills\n-cod wz wins\n-cod wz kd\n-cod wz deaths\n-cod mp kills\n-cod mp wins\n-cod mp kd\n-cod mp deaths\n-cod mp streak");
       return;
     }
 
@@ -65,57 +67,53 @@ Client.on('message', async message => {
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       var people = [];
 
-      if (message.content.toUpperCase().startsWith(`-COD WZ`)) {
-        //I want Warzone Data
-        // CodApi.MWwz(MyActivisionName).then(data => {
-        //   data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
-        //   people.push(data.br);
-        // }).catch(err => {
-        //   console.log(err);
-        // });
+      //I want Warzone Data
+      // CodApi.MWwz(MyActivisionName).then(data => {
+      //   data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
+      //   people.push(data.br);
+      // }).catch(err => {
+      //   console.log(err);
+      // });
 
-        CodApi.MWmp(MyActivisionName).then(data => {
-          console.log(data.lifetime.itemData.lethals);
-        }).catch(err => {
-          console.log(err);
-        });
+      CodApi.MWmp(MyActivisionName).then(data => {
+        data.username = data.username.slice(0, data.indexOf('#'));
+        people.push(data);
+      }).catch(err => {
+        console.log(err);
+      });
 
-        CodApi.MWfriends(MyActivisionName).then(data => {
-          var counter = data.length;
-          //var usernames = [];
-          console.log(data);
-          return;
+      CodApi.MWfriends(MyActivisionName).then(data => {
+        var counter = data.length;
 
-          // for (let key in data) {
-          //   console.log(data[key].lifetime.mode.br.properties);
-          //   usernames[key] = data[key].username;
+        // for (let key in data) {
+        //   console.log(data[key].lifetime.mode.br.properties);
+        //   usernames[key] = data[key].username;
 
-          //   CodApi.MWwz(usernames[key]).then(result => {
-          //     result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
-          //     people.push(result.br);
+        //   CodApi.MWwz(usernames[key]).then(result => {
+        //     result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
+        //     people.push(result.br);
 
-          //     counter--;
-          //     if (counter == 0) {
-          //       codCallback(people);
-          //     }
-          //   }).catch(err => {
-          //     console.log(err);
-          //   });
-          // }
+        //     counter--;
+        //     if (counter == 0) {
+        //       codCallback(people);
+        //     }
+        //   }).catch(err => {
+        //     console.log(err);
+        //   });
+        // }
 
-          for (let key in data) {
-            data[key].username = data[key].username.slice(0, data[key].indexOf('#'));
-            people.push(data[key]);
-            counter--;
-              if (counter == 0) {
-                codCallback(people);
-              }
+        for (let key in data) {
+          data[key].username = data[key].username.slice(0, data[key].indexOf('#'));
+          people.push(data[key]);
+          counter--;
+          if (counter == 0) {
+            codCallback(people);
           }
+        }
 
-        }).catch(err => {
-          console.log(err);
-        });
-      }
+      }).catch(err => {
+        console.log(err);
+      });
     })
   }
 })
@@ -156,9 +154,9 @@ function codCallback(stats) {
   switch (codStatToTrack) {
     case "wzkills":
       codResponseMessage = "---------Warzone Kills---------\n";
-      stats.sort((a, b) => (a.kills < b.kills) ? 1 : -1);
+      stats.sort((a, b) => (a.lifetime.mode.br.properties.kills < b.lifetime.mode.br.properties.kills) ? 1 : -1);
       for (let key in stats) {
-        codResponseMessage += stats[key].title + ": " + stats[key].kills + "\n";
+        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.mode.br.properties.kills + "\n";
       }
       break;
     case "wzwins":
