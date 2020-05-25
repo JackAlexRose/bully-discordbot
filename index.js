@@ -78,6 +78,8 @@ Client.on('message', async message => {
           var counter = data.length;
           var usernames = [];
 
+          console.log(data);
+
           for (let key in data) {
             usernames[key] = data[key].username;
             CodApi.MWwz(usernames[key]).then(result => {
