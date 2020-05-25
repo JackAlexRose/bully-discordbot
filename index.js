@@ -76,7 +76,7 @@ Client.on('message', async message => {
       // });
 
       CodApi.MWmp(MyActivisionName).then(data => {
-        data.username = data.username.slice(0, data.indexOf('#'));
+        data.username = data.username.slice(0, data.username.indexOf('#'));
         people.push(data);
       }).catch(err => {
         console.log(err);
@@ -103,7 +103,7 @@ Client.on('message', async message => {
         // }
 
         for (let key in data) {
-          data[key].username = data[key].username.slice(0, data[key].indexOf('#'));
+          data[key].username = data[key].username.slice(0, data[key].username.indexOf('#'));
           people.push(data[key]);
           counter--;
           if (counter == 0) {
