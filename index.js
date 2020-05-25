@@ -75,7 +75,7 @@ Client.on('message', async message => {
         // });
 
         CodApi.MWmp(MyActivisionName).then(data => {
-          console.log(data);
+          console.log(data.lifetime.itemData.lethals);
         }).catch(err => {
           console.log(err);
         });
