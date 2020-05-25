@@ -99,7 +99,7 @@ Client.on('message', async message => {
       else if (message.content.toUpperCase().startsWith(`-COD MP`)) {
         //I want MultiPlayer Data
         CodApi.MWmp(MyActivisionName).then(data => {
-          console.log(data);
+          console.log(data.lifetime.all.properties);
           // data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
           // people.push(data.br);
         }).catch(err => {
