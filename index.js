@@ -78,9 +78,9 @@ Client.on('message', async message => {
           var counter = data.length;
           var usernames = [];
 
-          console.log(data.lifetime.all);
 
           for (let key in data) {
+            console.log(data.lifetime.all);
             usernames[key] = data[key].username;
             CodApi.MWwz(usernames[key]).then(result => {
               result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
