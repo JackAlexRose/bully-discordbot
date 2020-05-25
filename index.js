@@ -80,7 +80,7 @@ Client.on('message', async message => {
 
 
           for (let key in data) {
-            console.log(data[key].lifetime.all);
+            console.log(data[key].lifetime);
             usernames[key] = data[key].username;
             CodApi.MWwz(usernames[key]).then(result => {
               result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
@@ -102,7 +102,6 @@ Client.on('message', async message => {
         //I want MultiPlayer Data
         CodApi.MWmp(MyActivisionName).then(data => {
           //console.log(data.lifetime.all.properties);
-          console.log(data.lifetime);
           // data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
           // people.push(data.br);
         }).catch(err => {
