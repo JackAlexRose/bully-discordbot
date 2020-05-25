@@ -78,7 +78,7 @@ Client.on('message', async message => {
           var counter = data.length;
           var usernames = [];
 
-          console.log(data);
+          console.log(data.lifetime.all);
 
           for (let key in data) {
             usernames[key] = data[key].username;
