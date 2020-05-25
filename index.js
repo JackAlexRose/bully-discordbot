@@ -161,46 +161,46 @@ function codCallback(stats) {
       break;
       case "mpkills":
       codResponseMessage = "---------Multiplayer Kills---------\n";
-      stats.sort((a, b) => (a.lifetime.mode.all.properties.kills < b.lifetime.mode.all.properties.kills) ? 1 : -1);
+      stats.sort((a, b) => (a.lifetime.all.properties.kills < b.lifetime.all.properties.kills) ? 1 : -1);
       for (let key in stats) {
-        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.mode.all.properties.kills + "\n";
+        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.kills + "\n";
       }
       break;
     case "mpwins":
       codResponseMessage = "---------Multiplayer Wins---------\n";
-      stats.sort((a, b) => (a.lifetime.mode.all.properties.wins < b.lifetime.mode.all.properties.wins) ? 1 : -1);
+      stats.sort((a, b) => (a.lifetime.all.properties.wins < b.lifetime.all.properties.wins) ? 1 : -1);
       for (let key in stats) {
-        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.mode.all.properties.wins + "\n";
+        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.wins + "\n";
       }
       break;
     case "mpkd":
       codResponseMessage = "---------Multiplayer K/D---------\n";
-      stats.sort((a, b) => (a.lifetime.mode.all.properties.kdRatio < b.lifetime.mode.all.properties.kdRatio) ? 1 : -1);
+      stats.sort((a, b) => (a.lifetime.all.properties.kdRatio < b.lifetime.all.properties.kdRatio) ? 1 : -1);
       for (let key in stats) {
         // Round the k/d to 2dp
-        stats[key].lifetime.mode.all.properties.kdRatio = Math.round((stats[key].lifetime.mode.all.properties.kdRatio + Number.EPSILON) * 100) / 100
-        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.mode.all.properties.kdRatio + "\n";
+        stats[key].lifetime.all.properties.kdRatio = Math.round((stats[key].lifetime.all.properties.kdRatio + Number.EPSILON) * 100) / 100
+        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.kdRatio + "\n";
       }
       break;
     case "mpdeaths":
       codResponseMessage = "---------Multiplayer Deaths---------\n";
-      stats.sort((a, b) => (a.lifetime.mode.all.properties.deaths < b.lifetime.mode.all.properties.deaths) ? 1 : -1);
+      stats.sort((a, b) => (a.lifetime.all.properties.deaths < b.lifetime.all.properties.deaths) ? 1 : -1);
       for (let key in stats) {
-        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.mode.all.properties.deaths + "\n";
+        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.deaths + "\n";
       }
       break;
       case "mpstreak":
         codResponseMessage = "---------Multiplayer Best Streak---------\n";
-        stats.sort((a, b) => (a.lifetime.mode.all.properties.recordKillStreak < b.lifetime.mode.all.properties.recordKillStreak) ? 1 : -1);
+        stats.sort((a, b) => (a.lifetime.all.properties.recordKillStreak < b.lifetime.all.properties.recordKillStreak) ? 1 : -1);
         for (let key in stats) {
-          codResponseMessage += stats[key].username + ": " + stats[key].lifetime.mode.all.properties.recordKillStreak + "\n";
+          codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.recordKillStreak + "\n";
         }
         break;
         case "mpbestkills":
           codResponseMessage = "---------Multiplayer Best Kills In One Game---------\n";
-          stats.sort((a, b) => (a.lifetime.mode.all.properties.bestKills < b.lifetime.mode.all.properties.bestKills) ? 1 : -1);
+          stats.sort((a, b) => (a.lifetime.all.properties.bestKills < b.lifetime.all.properties.bestKills) ? 1 : -1);
           for (let key in stats) {
-            codResponseMessage += stats[key].username + ": " + stats[key].lifetime.mode.all.properties.bestKills + "\n";
+            codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.bestKills + "\n";
           }
           break;
     default:
