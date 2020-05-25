@@ -67,68 +67,54 @@ Client.on('message', async message => {
 
       if (message.content.toUpperCase().startsWith(`-COD WZ`)) {
         //I want Warzone Data
-        CodApi.MWwz(MyActivisionName).then(data => {
-          data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
-          people.push(data.br);
+        // CodApi.MWwz(MyActivisionName).then(data => {
+        //   data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
+        //   people.push(data.br);
+        // }).catch(err => {
+        //   console.log(err);
+        // });
+
+        CodApi.MWmp(MyActivisionName).then(data => {
+          console.log(data);
         }).catch(err => {
           console.log(err);
         });
 
         CodApi.MWfriends(MyActivisionName).then(data => {
           var counter = data.length;
-          var usernames = [];
+          //var usernames = [];
+          console.log(data);
+          return;
 
+          // for (let key in data) {
+          //   console.log(data[key].lifetime.mode.br.properties);
+          //   usernames[key] = data[key].username;
+
+          //   CodApi.MWwz(usernames[key]).then(result => {
+          //     result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
+          //     people.push(result.br);
+
+          //     counter--;
+          //     if (counter == 0) {
+          //       codCallback(people);
+          //     }
+          //   }).catch(err => {
+          //     console.log(err);
+          //   });
+          // }
 
           for (let key in data) {
-            console.log(data[key].lifetime.mode.br.properties);
-            usernames[key] = data[key].username;
-            CodApi.MWwz(usernames[key]).then(result => {
-              result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
-              people.push(result.br);
-
-              counter--;
+            data[key].username = data[key].username.slice(0, data[key].indexOf('#'));
+            people.push(data[key]);
+            counter--;
               if (counter == 0) {
                 codCallback(people);
               }
-            }).catch(err => {
-              console.log(err);
-            });
           }
+
         }).catch(err => {
           console.log(err);
         });
-      }
-      else if (message.content.toUpperCase().startsWith(`-COD MP`)) {
-        //I want MultiPlayer Data
-        CodApi.MWmp(MyActivisionName).then(data => {
-          //console.log(data.lifetime.all.properties);
-          // data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
-          // people.push(data.br);
-        }).catch(err => {
-          console.log(err);
-        });
-
-        // CodApi.MWfriends(MyActivisionName).then(data => {
-        //   var counter = data.length;
-        //   var usernames = [];
-
-        //   for (let key in data) {
-        //     usernames[key] = data[key].username;
-        //     CodApi.MWwz(usernames[key]).then(result => {
-        //       result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
-        //       people.push(result.br);
-
-        //       counter--;
-        //       if (counter == 0) {
-        //         codCallback(people);
-        //       }
-        //     }).catch(err => {
-        //       console.log(err);
-        //     });
-        //   }
-        // }).catch(err => {
-        //   console.log(err);
-        // });
       }
     })
   }
