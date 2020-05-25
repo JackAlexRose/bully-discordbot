@@ -9,7 +9,7 @@ let ratherHttp = new XMLHttpRequest();
 var movieChannel, ratherChannel, codChannel;
 var url;
 const MyActivisionName = 'PLAGUESPITTER#3141115';
-var codStatToTrack = 'kills';
+var codStatToTrack = 'wzkills';
 
 Client.once('ready', () => {
   console.log('Client ready!');
@@ -39,16 +39,24 @@ Client.on('message', async message => {
     message.channel.send("RUF RUF");
   }
   else if (message.content.toUpperCase().startsWith(`-COD`)) {
-    if (message.content.toUpperCase().startsWith(`-COD KILLS`)) {
-      codStatToTrack = 'kills';
-    } else if (message.content.toUpperCase().startsWith(`-COD WINS`)) {
-      codStatToTrack = 'wins';
-    } else if (message.content.toUpperCase().startsWith(`-COD KD`)) {
-      codStatToTrack = 'kd';
-    } else if (message.content.toUpperCase().startsWith(`-COD DEATHS`)) {
-      codStatToTrack = 'deaths';
+    if (message.content.toUpperCase().startsWith(`-COD WZ KILLS`)) {
+      codStatToTrack = 'wzkills';
+    } else if (message.content.toUpperCase().startsWith(`-COD WZ WINS`)) {
+      codStatToTrack = 'wzwins';
+    } else if (message.content.toUpperCase().startsWith(`-COD WZ KD`)) {
+      codStatToTrack = 'wzkd';
+    } else if (message.content.toUpperCase().startsWith(`-COD WZ DEATHS`)) {
+      codStatToTrack = 'wzdeaths';
+    } else if (message.content.toUpperCase().startsWith(`-COD MP KILLS`)) {
+      codStatToTrack = 'mpkills';
+    } else if (message.content.toUpperCase().startsWith(`-COD MP WINS`)) {
+      codStatToTrack = 'mpwins';
+    } else if (message.content.toUpperCase().startsWith(`-COD MP KD`)) {
+      codStatToTrack = 'mpkd';
+    } else if (message.content.toUpperCase().startsWith(`-COD MP DEATHS`)) {
+      codStatToTrack = 'mpdeaths';
     } else {
-      message.channel.send("Usage is:\n-cod kills\n-cod wins\n-cod kd\n-cod deaths");
+      message.channel.send("Usage is:\n-cod wz kills\n-cod wz wins\n-cod wz kd\n-cod wz deaths\n-cod mp kills\n-cod mp wins\n-cod mp kd\n-cod mp deaths");
       return;
     }
 
@@ -57,35 +65,69 @@ Client.on('message', async message => {
     CodApi.login(`${process.env.codAccountEmail}`, `${process.env.codAccountPassword}`).then((response) => {
       var people = [];
 
-      //I want Warzone Data
-      CodApi.MWwz(MyActivisionName).then(data => {
-        data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
-        people.push(data.br);
-      }).catch(err => {
-        console.log(err);
-      });
+      if (message.content.toUpperCase().startsWith(`-COD WZ`)) {
+        //I want Warzone Data
+        CodApi.MWwz(MyActivisionName).then(data => {
+          data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
+          people.push(data.br);
+        }).catch(err => {
+          console.log(err);
+        });
 
-      CodApi.MWfriends(MyActivisionName).then(data => {
-        var counter = data.length;
-        var usernames = [];
+        CodApi.MWfriends(MyActivisionName).then(data => {
+          var counter = data.length;
+          var usernames = [];
 
-        for (let key in data) {
-          usernames[key] = data[key].username;
-          CodApi.MWwz(usernames[key]).then(result => {
-            result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
-            people.push(result.br);
+          for (let key in data) {
+            usernames[key] = data[key].username;
+            CodApi.MWwz(usernames[key]).then(result => {
+              result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
+              people.push(result.br);
 
-            counter--;
-            if (counter == 0) {
-              codCallback(people);
-            }
-          }).catch(err => {
-            console.log(err);
-          });
-        }
-      }).catch(err => {
-        console.log(err);
-      });
+              counter--;
+              if (counter == 0) {
+                codCallback(people);
+              }
+            }).catch(err => {
+              console.log(err);
+            });
+          }
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+      else if (message.content.toUpperCase().startsWith(`-COD MP`)) {
+        //I want MultiPlayer Data
+        CodApi.MWmp(MyActivisionName).then(data => {
+          console.log(data);
+          // data.br.title = MyActivisionName.slice(0, MyActivisionName.indexOf('#'));
+          // people.push(data.br);
+        }).catch(err => {
+          console.log(err);
+        });
+
+        // CodApi.MWfriends(MyActivisionName).then(data => {
+        //   var counter = data.length;
+        //   var usernames = [];
+
+        //   for (let key in data) {
+        //     usernames[key] = data[key].username;
+        //     CodApi.MWwz(usernames[key]).then(result => {
+        //       result.br.title = usernames[key].slice(0, usernames[key].indexOf('#'));
+        //       people.push(result.br);
+
+        //       counter--;
+        //       if (counter == 0) {
+        //         codCallback(people);
+        //       }
+        //     }).catch(err => {
+        //       console.log(err);
+        //     });
+        //   }
+        // }).catch(err => {
+        //   console.log(err);
+        // });
+      }
     })
   }
 })
@@ -124,21 +166,21 @@ ratherHttp.onload = function () {
 function codCallback(stats) {
   var codResponseMessage;
   switch (codStatToTrack) {
-    case "kills":
+    case "wzkills":
       codResponseMessage = "---------Warzone Kills---------\n";
       stats.sort((a, b) => (a.kills < b.kills) ? 1 : -1);
       for (let key in stats) {
         codResponseMessage += stats[key].title + ": " + stats[key].kills + "\n";
       }
       break;
-    case "wins":
+    case "wzwins":
       codResponseMessage = "---------Warzone Wins---------\n";
       stats.sort((a, b) => (a.wins < b.wins) ? 1 : -1);
       for (let key in stats) {
         codResponseMessage += stats[key].title + ": " + stats[key].wins + "\n";
       }
       break;
-    case "kd":
+    case "wzkd":
       codResponseMessage = "---------Warzone K/D---------\n";
       stats.sort((a, b) => (a.kdRatio < b.kdRatio) ? 1 : -1);
       for (let key in stats) {
@@ -147,7 +189,7 @@ function codCallback(stats) {
         codResponseMessage += stats[key].title + ": " + stats[key].kdRatio + "\n";
       }
       break;
-    case "deaths":
+    case "wzdeaths":
       codResponseMessage = "---------Warzone Deaths---------\n";
       stats.sort((a, b) => (a.deaths < b.deaths) ? 1 : -1);
       for (let key in stats) {
