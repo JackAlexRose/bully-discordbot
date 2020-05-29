@@ -102,15 +102,15 @@ movieHttp.onload = function () {
 
   if (movieHttp.status >= 200 && movieHttp.status < 400) {
     // Send the message
-    if(data.Title == null){
-      movieChannel.send("Sorry I couldn't find that one"){
-        return;
-      }
+    if (data.Title == null) {
+      movieChannel.send("Sorry I couldn't find that one");
+      return;
     }
-    movieChannel.send("Title: " + data.Title + "\nYear: " + data.Year + "\nDirector: " + data.Director + "\nGenre: " + data.Genre + "\nCast: " + data.Actors + "\nRuntime: " + data.Runtime + "\nLanguage: " + data.Language + "\nPlot: " + data.Plot + "\n" + data.Poster);
-  } else {
-    console.log('Movie http status error');
   }
+  movieChannel.send("Title: " + data.Title + "\nYear: " + data.Year + "\nDirector: " + data.Director + "\nGenre: " + data.Genre + "\nCast: " + data.Actors + "\nRuntime: " + data.Runtime + "\nLanguage: " + data.Language + "\nPlot: " + data.Plot + "\n" + data.Poster);
+} else {
+  console.log('Movie http status error');
+}
 }
 
 // Would you rather callback
@@ -164,7 +164,7 @@ function codCallback(stats) {
         codResponseMessage += stats[key].username + ": " + stats[key].lifetime.mode.br.properties.deaths + "\n";
       }
       break;
-      case "mpkills":
+    case "mpkills":
       codResponseMessage = "---------Multiplayer Kills---------\n";
       stats.sort((a, b) => (a.lifetime.all.properties.kills < b.lifetime.all.properties.kills) ? 1 : -1);
       for (let key in stats) {
@@ -194,20 +194,20 @@ function codCallback(stats) {
         codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.deaths + "\n";
       }
       break;
-      case "mpstreak":
-        codResponseMessage = "---------Multiplayer Best Streak---------\n";
-        stats.sort((a, b) => (a.lifetime.all.properties.recordKillStreak < b.lifetime.all.properties.recordKillStreak) ? 1 : -1);
-        for (let key in stats) {
-          codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.recordKillStreak + "\n";
-        }
-        break;
-        case "mpbestkills":
-          codResponseMessage = "---------Multiplayer Best Kills In One Game---------\n";
-          stats.sort((a, b) => (a.lifetime.all.properties.bestKills < b.lifetime.all.properties.bestKills) ? 1 : -1);
-          for (let key in stats) {
-            codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.bestKills + "\n";
-          }
-          break;
+    case "mpstreak":
+      codResponseMessage = "---------Multiplayer Best Streak---------\n";
+      stats.sort((a, b) => (a.lifetime.all.properties.recordKillStreak < b.lifetime.all.properties.recordKillStreak) ? 1 : -1);
+      for (let key in stats) {
+        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.recordKillStreak + "\n";
+      }
+      break;
+    case "mpbestkills":
+      codResponseMessage = "---------Multiplayer Best Kills In One Game---------\n";
+      stats.sort((a, b) => (a.lifetime.all.properties.bestKills < b.lifetime.all.properties.bestKills) ? 1 : -1);
+      for (let key in stats) {
+        codResponseMessage += stats[key].username + ": " + stats[key].lifetime.all.properties.bestKills + "\n";
+      }
+      break;
     default:
       console.log("Unrecognised stat: " + codStatToTrack);
   }
