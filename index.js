@@ -103,7 +103,7 @@ movieHttp.onload = function () {
   if (movieHttp.status >= 200 && movieHttp.status < 400) {
     // Send the message
     if (data.Title == null) {
-      movieChannel.send("Sorry I couldn't find that one");
+      movieChannel.send("Sorry, I couldn't find that one");
       return;
     }
     movieChannel.send("Title: " + data.Title + "\nYear: " + data.Year + "\nDirector: " + data.Director + "\nGenre: " + data.Genre + "\nCast: " + data.Actors + "\nRuntime: " + data.Runtime + "\nLanguage: " + data.Language + "\nPlot: " + data.Plot + "\n" + data.Poster);
