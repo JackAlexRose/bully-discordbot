@@ -17,7 +17,10 @@ Client.once('ready', () => {
 
 Client.on('message', async message => {
   if (message.author.username == "Groovy"){
-    console.log(message.embeds[0].description);
+    if(message.embeds[0].title == "Now playing" && message.embeds[0].description.includes(`Who Let The Dogs Out`)){
+      message.channel.send("Turn this shit off");
+      message.channel.send("-next");
+    }
   }
   if (message.content.toUpperCase().startsWith(`-MOVIE `)) {
     url = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
