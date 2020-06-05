@@ -18,6 +18,7 @@ Client.once('ready', () => {
 Client.on('message', async message => {
   if (message.content.toUpperCase().startsWith(`-PLAY`)){
     if(message.content.toUpperCase().includes(`WHO LET THE DOGS OUT`)){
+      message.channel.send("OK, We need to have a chat")
       message.author.send("No");
       message.author.send("That song is awful");
       message.author.send("Its not funny either");
@@ -27,12 +28,6 @@ Client.on('message', async message => {
       message.author.send("Request a real song");
     }
   }
-  /*if (message.author.username == "Groovy"){
-    if(message.embeds[0].title == "Now playing" && message.embeds[0].description.includes(`Who Let The Dogs Out`)){
-      //message.channel.send("Turn this off");
-      message.channel.send("-next");
-    }
-  }*/
   if (message.content.toUpperCase().startsWith(`-MOVIE `)) {
     url = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
     var request = message.content.slice(7);
