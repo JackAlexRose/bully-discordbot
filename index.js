@@ -17,7 +17,7 @@ Client.once('ready', () => {
 
 Client.on('message', async message => {
   if (message.author.username == "Groovy"){
-    console.log(message.content);
+    console.log(message);
   }
   if (message.content.toUpperCase().startsWith(`-MOVIE `)) {
     url = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
