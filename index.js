@@ -18,7 +18,7 @@ Client.once('ready', () => {
 Client.on('message', async message => {
   if (message.author.username == "Groovy"){
     if(message.embeds[0].title == "Now playing" && message.embeds[0].description.includes(`Who Let The Dogs Out`)){
-      message.channel.send("Turn this shit off");
+      //message.channel.send("Turn this shit off");
       message.channel.send("-next");
     }
   }
