@@ -16,18 +16,6 @@ Client.once('ready', () => {
 });
 
 Client.on('message', async message => {
-  if (message.content.toUpperCase().startsWith(`-PLAY`)){
-    if(message.content.toUpperCase().includes(`WHO LET THE DOGS OUT`)){
-      message.channel.send("OK, We need to have a chat")
-      message.author.send("No");
-      message.author.send("That song is awful");
-      message.author.send("Its not funny either");
-      message.author.send("Its just bad");
-      message.author.send("Grow up");
-      message.author.send("This is not year 6 disco");
-      message.author.send("Request a real song");
-    }
-  }
   if (message.content.toUpperCase().startsWith(`-MOVIE `)) {
     url = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
     var request = message.content.slice(7);
