@@ -19,12 +19,18 @@ Client.on('message', async message => {
   if (message.content.toUpperCase().startsWith(`-TROUT `)) {
     var input = message.content.slice(7);
     var output = new String();
+    var upperCount = 0;
+    var lowerCount = 0;
     for (let i = 0; i < input.length; i++){
-      if(Math.round(Math.random()) == 1){
+      if(lowerCount > 3 || (Math.round(Math.random()) == 1 && upperCount < 4)){
         output += input[i].toUpperCase();
+        upperCount++;
+        lowerCount = 0;
       }
       else{
         output += input[i].toLowerCase();
+        lowerCount++;
+        upperCount = 0;
       }
     }
 
