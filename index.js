@@ -21,13 +21,13 @@ Client.on('message', async message => {
     var output = new String();
     for (let i = 0; i < input.length; i++){
       if(Math.round(Math.random()) == 1){
-        output += string[i].toUpperCase();
+        output += input[i].toUpperCase();
       }
       else{
-        output += string[i].toLowerCase();
+        output += input[i].toLowerCase();
       }
     }
-    
+
     message.channel.send(output);
   }
   if (message.content.toUpperCase().startsWith(`-MOVIE `)) {
