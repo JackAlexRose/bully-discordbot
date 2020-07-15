@@ -19,15 +19,15 @@ Client.on('message', async message => {
   if (message.content.toUpperCase().startsWith(`-TROUT `)) {
     var input = message.content.slice(7);
     var output = new String();
-    for(let char in input){
+    for (let i = 0; i < input.length; i++){
       if(Math.round(Math.random()) == 1){
-        output += char.toUpperCase();
+        output += string[i].toUpperCase();
       }
       else{
-        output += char.toLowerCase();
+        output += string[i].toLowerCase();
       }
     }
-
+    
     message.channel.send(output);
   }
   if (message.content.toUpperCase().startsWith(`-MOVIE `)) {
