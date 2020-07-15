@@ -16,6 +16,20 @@ Client.once('ready', () => {
 });
 
 Client.on('message', async message => {
+  if (message.content.toUpperCase().startsWith(`-TROUT `)) {
+    var input = message.content.slice(7);
+    var output = new String();
+    for(let char in input){
+      if(Math.round(Math.random()) == 1){
+        output += char.toUpperCase();
+      }
+      else{
+        output += char.toLowerCase();
+      }
+    }
+
+    message.channel.send(output);
+  }
   if (message.content.toUpperCase().startsWith(`-MOVIE `)) {
     url = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
     var request = message.content.slice(7);
