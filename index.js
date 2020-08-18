@@ -21,13 +21,13 @@ Client.on('message', async message => {
     var output = new String();
     var upperCount = 0;
     var lowerCount = 0;
-    for (let i = 0; i < input.length; i++){
-      if(lowerCount > 3 || (Math.round(Math.random()) == 1 && upperCount < 4)){
+    for (let i = 0; i < input.length; i++) {
+      if (lowerCount > 3 || (Math.round(Math.random()) == 1 && upperCount < 4)) {
         output += input[i].toUpperCase();
         upperCount++;
         lowerCount = 0;
       }
-      else{
+      else {
         output += input[i].toLowerCase();
         lowerCount++;
         upperCount = 0;
@@ -101,7 +101,9 @@ Client.on('message', async message => {
 
         for (let key in data) {
           data[key].username = data[key].username.slice(0, data[key].username.indexOf('#'));
-          people.push(data[key]);
+          if (!data[key].username.startsWith(`4`)) {
+            people.push(data[key]);
+          }
           counter--;
           if (counter == 0) {
             codCallback(people);
