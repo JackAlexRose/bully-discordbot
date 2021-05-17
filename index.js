@@ -29,8 +29,6 @@ client.on('ready', async () => {
         }
     });
 
-    console.log('first test')
-
     await getApp(guildId).commands.post({
         data: {
             name: 'embed',
@@ -52,8 +50,6 @@ client.on('ready', async () => {
         }
     })
 
-    console.log('second test')
-
     client.ws.on('INTERACTION_CREATE', async (interaction) => {
         const { name, options } = interaction.data;
 
@@ -69,6 +65,8 @@ client.on('ready', async () => {
                 args[name] = value;
             }
         }
+
+        console.log(args);
 
         if (command === 'ping') {
             reply(interaction, 'pong');
