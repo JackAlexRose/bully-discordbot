@@ -29,8 +29,33 @@ client.on('ready', async () => {
         }
     });
 
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'embed',
+            description: 'Displays an embed',
+            options: [
+                {
+                    name: 'Name',
+                    description: 'Your name',
+                    required: true,
+                    type: 3 //string
+                },
+                {
+                    name: 'Age',
+                    description: 'Your age',
+                    required: false,
+                    type: 4 //int
+                }
+            ]
+        }
+    })
+
     client.ws.on('INTERACTION_CREATE', async (interaction) => {
-        const command = interaction.data.name.toLowerCase();
+        const { name, options } = interaction.data;
+
+        const command = name.toLowerCase();
+
+        console.log(options);
 
         if (command === 'ping') {
             reply(interaction, 'pong');
