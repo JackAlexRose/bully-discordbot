@@ -33,7 +33,7 @@ client.on('ready', async () => {
 
     await getApp(guildId).commands.post({
         data: {
-            name: 'pong',
+            name: 'embed',
             description: 'Displays an embed',
             options: [
                 {
@@ -59,7 +59,16 @@ client.on('ready', async () => {
 
         const command = name.toLowerCase();
 
+        const args = {};
+
         console.log(options);
+
+        if (options) {
+            for (const option of options) {
+                const { name, value } = option;
+                args[name] = value;
+            }
+        }
 
         if (command === 'ping') {
             reply(interaction, 'pong');
