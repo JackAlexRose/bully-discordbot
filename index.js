@@ -70,19 +70,43 @@ client.on('ready', async () => {
 
         if (command === 'ping') {
             reply(interaction, 'pong');
+        } else if (command === 'embed') {
+            const embed = new Discord.MessageEmbed().setTitle('Example Embed');
+
+            for (const arg in args) {
+                const value = args[arg];
+                embed.addField(arg, value);
+            }
+
+            reply(interaction, embed);
         }
     })
 })
 
 const reply = (interaction, response) => {
+    let data = {
+        content: response
+    }
+
+    if (typeof response === 'object') {
+        data = await createApiMessage(interaction, response);
+    }
+
     client.api.interactions(interaction.id, interaction.token).callback.post({
         data: {
             type: 4,
-            data: {
-                content: response
-            }
+            data
         }
     })
+}
+
+const createApiMessage = async (interaction, content) => {
+    const { data, files } = await Discord.APIMessage.create(
+        client.channels.resolve(interaction.channel_id),
+        content
+    ).resolveData().resolveFiles();
+
+    return { ...data, files }
 }
 
 client.login(process.env.token);
