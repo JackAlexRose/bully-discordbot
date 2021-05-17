@@ -29,12 +29,11 @@ client.on('ready', async () => {
         }
     });
 
-
     console.log('first test')
 
     await getApp(guildId).commands.post({
         data: {
-            name: 'Embedding',
+            name: 'embedding',
             description: 'Displays an embed',
             options: [
                 {
