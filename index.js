@@ -38,16 +38,16 @@ client.on('ready', async () => {
                     name: 'Name',
                     description: 'Your name',
                     required: true,
-                    type: 3 //string
+                    type: 3, // string
                 },
                 {
                     name: 'Age',
                     description: 'Your age',
                     required: false,
-                    type: 4 //int
-                }
-            ]
-        }
+                    type: 4, // integer
+                },
+            ],
+        },
     })
 
     client.ws.on('INTERACTION_CREATE', async (interaction) => {
