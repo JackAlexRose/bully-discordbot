@@ -83,7 +83,7 @@ client.on('ready', async () => {
     })
 })
 
-const reply = (interaction, response) => {
+const reply = async (interaction, response) => {
     let data = {
         content: response
     }
