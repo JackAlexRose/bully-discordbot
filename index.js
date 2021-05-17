@@ -29,6 +29,9 @@ client.on('ready', async () => {
         }
     });
 
+
+    console.log('first test')
+
     await getApp(guildId).commands.post({
         data: {
             name: 'Embedding',
@@ -49,6 +52,8 @@ client.on('ready', async () => {
             ],
         },
     })
+
+    console.log('second test')
 
     client.ws.on('INTERACTION_CREATE', async (interaction) => {
         const { name, options } = interaction.data;
