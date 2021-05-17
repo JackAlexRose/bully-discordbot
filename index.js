@@ -40,16 +40,16 @@ client.on('ready', async () => {
                     name: 'Name',
                     description: 'Your name',
                     required: true,
-                    type: 3, // string
+                    type: 3 // string
                 },
                 {
                     name: 'Age',
                     description: 'Your age',
                     required: false,
-                    type: 4, // integer
-                },
-            ],
-        },
+                    type: 4 // integer
+                }
+            ]
+        }
     })
 
     console.log('second test')
