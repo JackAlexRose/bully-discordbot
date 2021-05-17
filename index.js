@@ -1,7 +1,5 @@
 var XMLHttpRequest = require('xhr2');
 
-
-
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
@@ -35,16 +33,20 @@ client.on('ready', async () => {
         const command = interaction.data.name.toLowerCase();
 
         if (command === 'ping') {
-            client.api.interactions(interaction.id, interaction.token).callback.post({
-                data: {
-                    type: 4,
-                    data: {
-                        content: 'pong'
-                    }
-                }
-            })
+            reply(interaction, 'pong');
         }
     })
 })
+
+const reply = (interaction, response) => {
+    client.api.interactions(interaction.id, interaction.token).callback.post({
+        data: {
+            type: 4,
+            data: {
+                content: reponse
+            }
+        }
+    })
+}
 
 client.login(process.env.token);
