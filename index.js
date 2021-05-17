@@ -37,13 +37,13 @@ client.on('ready', async () => {
             description: 'Displays an embed',
             options: [
                 {
-                    name: 'Name',
+                    name: 'name',
                     description: 'Your name',
                     required: true,
                     type: 3 // string
                 },
                 {
-                    name: 'Age',
+                    name: 'age',
                     description: 'Your age',
                     required: false,
                     type: 4 // integer
