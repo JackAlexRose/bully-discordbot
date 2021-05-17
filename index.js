@@ -33,7 +33,7 @@ client.on('ready', async () => {
 
     await getApp(guildId).commands.post({
         data: {
-            name: 'embedding',
+            name: 'pong',
             description: 'Displays an embed',
             options: [
                 {
