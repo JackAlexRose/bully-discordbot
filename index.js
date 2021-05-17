@@ -22,8 +22,6 @@ client.on('ready', async () => {
 
     console.log(commands);
 
-    await getApp(guildId).commands().delete('843955495814561793');
-
     await getApp(guildId).commands.post({
         data: {
             name: 'ping',
