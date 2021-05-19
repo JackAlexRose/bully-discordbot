@@ -156,18 +156,15 @@ const sendMovieRequest = (interaction, movieName, user = '') => {
             //{ name: "Trailer", value: "https://www.youtube.com/watch?v=KfL_V_YaHj8" }
         )
 
-        embed.setFooter('Hit the 📋 below to add movie to your watchlist');
         embed.setImage(responseData.Poster);
 
         if (user) {
-            // const user = client.users.cache.get(interaction.member.user.id);
             user.send('Hey, you asked me to add this movie to your watchlist:');
             user.send(embed).catch(console.error);
-            /*const addedEmbed = new Discord.MessageEmbed();
-            addedEmbed.addField('Added ' + responseData.Title, 'Check your DMs ;)');
-            reply(interaction, addedEmbed);*/
             return;
         }
+
+        embed.setFooter('Hit the 📋 below to add movie to your watchlist');
 
         reply(interaction, embed);
     })
@@ -195,9 +192,12 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
 });
 
-// Client.on('message', message => {
-
-// });
+Client.on('message', message => {
+    console.log(message.embeds[0]?.fields[0]);
+    if (message.author.id == '713014610344804422' && Object.values(message.embeds[0]?.fields[0]).includes("Year")) {
+        message.react('📋');
+    };
+});
 
 const getApp = (guildId) => {
     const app = client.api.applications(client.user.id);
