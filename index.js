@@ -1,7 +1,7 @@
 var XMLHttpRequest = require('xhr2');
 
 const Discord = require('discord.js');
-const client = new Discord.Client({ partials: ['REACTION'] });
+const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
 const guildId = '713782418057855057';
 const movieUrl = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
@@ -185,8 +185,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
             return;
         }
     }
-
-    console.log('I got this far');
 
     // Now the message has been cached and is fully available
     if (reaction._emoji.name === '📋' && reaction.message.author == '<@713014610344804422>' && !user.bot) {
