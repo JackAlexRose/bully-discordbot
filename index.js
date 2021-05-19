@@ -85,16 +85,12 @@ client.on('ready', async () => {
 
         const args = {};
 
-        console.log(options);
-
         if (options) {
             for (const option of options) {
                 const { name, value } = option;
                 args[name] = value;
             }
         }
-
-        console.log(args);
 
         switch (command) {
             case 'ping':
@@ -112,6 +108,7 @@ client.on('ready', async () => {
                 }
 
                 reply(interaction, embed);
+                break;
             case 'movie':
                 sendMovieRequest(interaction, args.name);
                 break;
@@ -164,7 +161,7 @@ const sendMovieRequest = (interaction, movieName, user = '') => {
             return;
         }
 
-        embed.setFooter('Hit the 📋 below to add movie to your watchlist');
+        embed.setFooter('Hit the 📋 below to add this movie to your watchlist');
 
         reply(interaction, embed);
     })
@@ -186,13 +183,13 @@ client.on('messageReactionAdd', async (reaction, user) => {
     // Now the message has been cached and is fully available
     if (reaction._emoji.name === '📋' && reaction.message.author.id == '713014610344804422' && !user.bot) {
         const movieTitle = reaction.message.embeds[0].title;
-        console.log('Add to watchlist: ', movieTitle);
-        console.log('The fields in this message are: ', reaction.message.embeds[0].fields)
+        console.log('Add to watchlist: ', movieTitle, ' for: ', user);
         sendMovieRequest(undefined, movieTitle, user);
     }
 });
 
 client.on('message', message => {
+    console.log(message);
     try {
         if (message.author.id == '713014610344804422' && Object.values(message.embeds[0]?.fields[0]).includes("Year")) {
             message.react('📋');
