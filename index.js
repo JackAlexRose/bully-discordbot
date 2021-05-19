@@ -74,8 +74,8 @@ client.on('ready', async () => {
 
         if (options) {
             for (const option of options) {
-                const { title, value } = option;
-                args[title] = value;
+                const { name, value } = option;
+                args[name] = value;
             }
         }
 
@@ -98,10 +98,7 @@ client.on('ready', async () => {
 
                 reply(interaction, embed);
             case 'movie':
-                console.log(args);
-
-                console.log("Title of movie: ", args.title);
-                args.title = args.title.replace(/ /g, "+");
+                args.name = args.name.replace(/ /g, "+");
 
                 const requestUrl = movieUrl + args.title;
 
