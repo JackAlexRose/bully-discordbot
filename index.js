@@ -1,7 +1,7 @@
 var XMLHttpRequest = require('xhr2');
 
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
 const guildId = '713782418057855057';
 const movieUrl = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
@@ -159,6 +159,7 @@ const sendMovieRequest = (interaction, args, watchlist) => {
 
         if (watchlist) {
             const user = client.users.cache.get(interaction.member.user.id);
+            user.send('Hey, you asked me to add this movie to your watchlist:');
             user.send(embed).catch(console.error);
             const addedEmbed = new Discord.MessageEmbed();
             addedEmbed.addField('Added ' + responseData.Title, 'Check your DMs ;)');
@@ -169,6 +170,23 @@ const sendMovieRequest = (interaction, args, watchlist) => {
         reply(interaction, embed);
     })
 }
+
+client.on('messageReactionAdd', async (reaction, user) => {
+    // When a reaction is received, check if the structure is partial
+    if (reaction.partial) {
+        // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            console.error('Something went wrong when fetching the message: ', error);
+            // Return as `reaction.message.author` may be undefined/null
+            return;
+        }
+    }
+    // Now the message has been cached and is fully available
+    console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction from "${user}`);
+    console.log(reaction.message);
+});
 
 const getApp = (guildId) => {
     const app = client.api.applications(client.user.id);
