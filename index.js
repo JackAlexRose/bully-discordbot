@@ -193,10 +193,14 @@ client.on('messageReactionAdd', async (reaction, user) => {
 });
 
 client.on('message', message => {
-    console.log(message.embeds[0]?.fields[0]);
-    if (message.author.id == '713014610344804422' && Object.values(message.embeds[0]?.fields[0]).includes("Year")) {
-        message.react('📋');
-    };
+    try {
+        if (message.author.id == '713014610344804422' && Object.values(message.embeds[0]?.fields[0]).includes("Year")) {
+            message.react('📋');
+        };
+    }
+    catch (error) {
+        console.log(error)
+    }
 });
 
 const getApp = (guildId) => {
