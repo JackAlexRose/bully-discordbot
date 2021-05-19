@@ -113,7 +113,7 @@ client.on('ready', async () => {
 
                 reply(interaction, embed);
             case 'movie':
-                sendMovieRequest(interaction, args, false);
+                sendMovieRequest(interaction, args.name);
                 break;
             case 'watchlist':
                 sendMovieRequest(interaction, args, true);
@@ -125,10 +125,10 @@ client.on('ready', async () => {
     })
 })
 
-const sendMovieRequest = (interaction, args, watchlist) => {
-    args.name = args.name.replace(/ /g, "+");
+const sendMovieRequest = (interaction, movieName, user = '') => {
+    movieName = movieName.replace(/ /g, "+");
 
-    const requestUrl = movieUrl + args.name;
+    const requestUrl = movieUrl + movieName;
 
     makeRequest('GET', requestUrl, function (err, data) {
         if (err) {
@@ -138,7 +138,7 @@ const sendMovieRequest = (interaction, args, watchlist) => {
         // Begin accessing JSON data here
         var responseData = JSON.parse(data);
 
-        if (responseData.Title == null) {
+        if (responseData.Title == null && interaction) {
             reply(interaction, "Sorry, I couldn't find that one");
             return;
         }
@@ -158,13 +158,13 @@ const sendMovieRequest = (interaction, args, watchlist) => {
 
         embed.setImage(responseData.Poster);
 
-        if (watchlist) {
-            const user = client.users.cache.get(interaction.member.user.id);
+        if (user) {
+            // const user = client.users.cache.get(interaction.member.user.id);
             user.send('Hey, you asked me to add this movie to your watchlist:');
             user.send(embed).catch(console.error);
-            const addedEmbed = new Discord.MessageEmbed();
+            /*const addedEmbed = new Discord.MessageEmbed();
             addedEmbed.addField('Added ' + responseData.Title, 'Check your DMs ;)');
-            reply(interaction, addedEmbed);
+            reply(interaction, addedEmbed);*/
             return;
         }
 
@@ -188,6 +188,13 @@ client.on('messageReactionAdd', async (reaction, user) => {
     console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction from "${user}`);
     console.log("TEST Message: ", reaction.message);
     console.log("TEST Reaction: ", reaction);
+
+    if (reaction._emoji.name === '📋') {
+        console.log('Add to watchlist');
+        sendMovieRequest(undefined, reaction.message.embeds[0].title, user);
+    }
+
+    //MAKE SURE USER IS NOT BOT user.bot bool
 });
 
 const getApp = (guildId) => {
