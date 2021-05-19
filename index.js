@@ -98,6 +98,9 @@ client.on('ready', async () => {
 
                 reply(interaction, embed);
             case 'movie':
+                console.log(args);
+
+                console.log("Title of movie: ", args.title);
                 args.title = args.title.replace(/ /g, "+");
 
                 const requestUrl = movieUrl + args.title;
