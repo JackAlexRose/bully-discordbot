@@ -48,7 +48,7 @@ client.on('ready', async () => {
         }
     });
 
-    await getApp(guildId).commands.post({
+    await getApp().commands.post({
         data: {
             name: 'movie',
             description: 'Display information about a given movie',
@@ -56,21 +56,6 @@ client.on('ready', async () => {
                 {
                     name: 'name',
                     description: 'Name of movie to search',
-                    required: true,
-                    type: 3 // string
-                }
-            ]
-        }
-    });
-
-    await getApp(guildId).commands.post({
-        data: {
-            name: 'watchlist',
-            description: 'Adds a movie to your watchlist',
-            options: [
-                {
-                    name: 'name',
-                    description: 'Name of movie to add to your watchlist',
                     required: true,
                     type: 3 // string
                 }
@@ -111,9 +96,6 @@ client.on('ready', async () => {
                 break;
             case 'movie':
                 sendMovieRequest(interaction, args.name);
-                break;
-            case 'watchlist':
-                sendMovieRequest(interaction, args, true);
                 break;
             default:
                 console.log("Command not recognised")
@@ -183,7 +165,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     // Now the message has been cached and is fully available
     if (reaction._emoji.name === '📋' && reaction.message.author.id == '713014610344804422' && !user.bot) {
         const movieTitle = reaction.message.embeds[0].title;
-        console.log('Add to watchlist: ', movieTitle, ' for: ', user);
+        console.log('Add to watchlist: ', movieTitle, ' for: ', user.username);
         sendMovieRequest(undefined, movieTitle, user);
     }
 });
