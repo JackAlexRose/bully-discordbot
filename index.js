@@ -1,7 +1,7 @@
 var XMLHttpRequest = require('xhr2');
 
 const Discord = require('discord.js');
-const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+const client = new Discord.Client({ partials: ['REACTION'] });
 
 const guildId = '713782418057855057';
 const movieUrl = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
@@ -156,6 +156,7 @@ const sendMovieRequest = (interaction, movieName, user = '') => {
             //{ name: "Trailer", value: "https://www.youtube.com/watch?v=KfL_V_YaHj8" }
         )
 
+        embed.setFooter('Hit the 📋 below to add movie to your watchlist');
         embed.setImage(responseData.Poster);
 
         if (user) {
@@ -185,18 +186,17 @@ client.on('messageReactionAdd', async (reaction, user) => {
         }
     }
     // Now the message has been cached and is fully available
-    console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction from "${user}`);
-    console.log("TEST Message: ", reaction.message);
-    console.log("TEST Reaction: ", reaction);
-
-    if (reaction._emoji.name === '📋') {
+    if (reaction._emoji.name === '📋' && reaction.message.author == '<@713014610344804422>' && !user.bot) {
         const movieTitle = reaction.message.embeds[0].title;
         console.log('Add to watchlist: ', movieTitle);
+        console.log('The fields in this message are: ', reaction.message.embeds[0].fields)
         sendMovieRequest(undefined, movieTitle, user);
     }
-
-    //MAKE SURE USER IS NOT BOT user.bot bool
 });
+
+// Client.on('message', message => {
+
+// });
 
 const getApp = (guildId) => {
     const app = client.api.applications(client.user.id);
