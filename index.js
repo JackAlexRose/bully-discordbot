@@ -48,7 +48,7 @@ client.on('ready', async () => {
         }
     });
 
-    await getApp().commands.post({
+    await getApp(guildId).commands.post({
         data: {
             name: 'movie',
             description: 'Display information about a given movie',
@@ -56,6 +56,21 @@ client.on('ready', async () => {
                 {
                     name: 'name',
                     description: 'Name of movie to search',
+                    required: true,
+                    type: 3 // string
+                }
+            ]
+        }
+    });
+
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'watchlist',
+            description: 'Adds a movie to your watchlist',
+            options: [
+                {
+                    name: 'name',
+                    description: 'Name of movie to add to your watchlist',
                     required: true,
                     type: 3 // string
                 }
@@ -98,39 +113,10 @@ client.on('ready', async () => {
 
                 reply(interaction, embed);
             case 'movie':
-                args.name = args.name.replace(/ /g, "+");
-
-                const requestUrl = movieUrl + args.name;
-
-                makeRequest('GET', requestUrl, function (err, data) {
-                    if (err) {
-                        console.log("Error receiving movie data" + err);
-                    }
-
-                    // Begin accessing JSON data here
-                    var responseData = JSON.parse(data);
-
-                    if (responseData.Title == null) {
-                        reply(interaction, "Sorry, I couldn't find that one");
-                        return;
-                    }
-
-                    const embed = new Discord.MessageEmbed().setTitle(responseData.Title + ' (' + responseData.Year + ')');
-
-                    embed.addFields(
-                        { name: "Runtime", value: responseData.Runtime },
-                        { name: "IMDB Rating", value: responseData.imdbRating },
-                        { name: "Genre", value: responseData.Genre },
-                        { name: "Director", value: responseData.Director },
-                        { name: "Actors", value: responseData.Actors },
-                        { name: "Plot", value: responseData.Plot },
-                        //{ name: "Trailer", value: "https://www.youtube.com/watch?v=KfL_V_YaHj8" }
-                    )
-
-                    embed.setImage(responseData.Poster);
-
-                    reply(interaction, embed);
-                })
+                sendMovieRequest(args, false);
+                break;
+            case 'watchlist':
+                sendMovieRequest(args, true);
                 break;
             default:
                 console.log("Command not recognised")
@@ -138,6 +124,51 @@ client.on('ready', async () => {
         }
     })
 })
+
+const sendMovieRequest = (args, watchlist) => {
+    args.name = args.name.replace(/ /g, "+");
+
+    const requestUrl = movieUrl + args.name;
+
+    makeRequest('GET', requestUrl, function (err, data) {
+        if (err) {
+            console.log("Error receiving movie data" + err);
+        }
+
+        // Begin accessing JSON data here
+        var responseData = JSON.parse(data);
+
+        if (responseData.Title == null) {
+            reply(interaction, "Sorry, I couldn't find that one");
+            return;
+        }
+
+        const embed = new Discord.MessageEmbed().setTitle(responseData.Title + ' (' + responseData.Year + ')');
+
+        embed.addFields(
+            { name: "Runtime", value: responseData.Runtime },
+            { name: "IMDB Rating", value: responseData.imdbRating },
+            { name: "Genre", value: responseData.Genre },
+            { name: "Director", value: responseData.Director },
+            { name: "Actors", value: responseData.Actors },
+            { name: "Plot", value: responseData.Plot },
+            //{ name: "Trailer", value: "https://www.youtube.com/watch?v=KfL_V_YaHj8" }
+        )
+
+        embed.setImage(responseData.Poster);
+
+        if (watchlist) {
+            const user = client.users.cache.get(interaction.member.user.id);
+            user.send(embed).catch(console.error);
+            const addedEmbed = new Discord.MessageEmbed();
+            addedEmbed.addField('Check your DMs ;)', '');
+            reply(interaction, addedEmbed);
+            return;
+        }
+
+        reply(interaction, embed);
+    })
+}
 
 const getApp = (guildId) => {
     const app = client.api.applications(client.user.id);
