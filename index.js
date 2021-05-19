@@ -100,7 +100,7 @@ client.on('ready', async () => {
             case 'movie':
                 args.name = args.name.replace(/ /g, "+");
 
-                const requestUrl = movieUrl + args.title;
+                const requestUrl = movieUrl + args.name;
 
                 makeRequest('GET', requestUrl, function (err, data) {
                     if (err) {
