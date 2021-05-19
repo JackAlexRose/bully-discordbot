@@ -190,8 +190,9 @@ client.on('messageReactionAdd', async (reaction, user) => {
     console.log("TEST Reaction: ", reaction);
 
     if (reaction._emoji.name === '📋') {
-        console.log('Add to watchlist');
-        sendMovieRequest(undefined, reaction.message.embeds[0].title, user);
+        const movieTitle = reaction.message.embeds[0].title;
+        console.log('Add to watchlist: ', movieTitle);
+        sendMovieRequest(undefined, movieTitle, user);
     }
 
     //MAKE SURE USER IS NOT BOT user.bot bool
