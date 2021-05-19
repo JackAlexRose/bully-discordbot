@@ -189,9 +189,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
 });
 
 client.on('message', message => {
-    console.log(message);
     try {
-        if (message.author.id == '713014610344804422' && Object.values(message.embeds[0]?.fields[0]).includes("Year")) {
+        if (message.channel.type !== 'dm' && message.author.id == '713014610344804422' && Object.values(message.embeds[0]?.fields[0]).includes("Year")) {
             message.react('📋');
         };
     }
