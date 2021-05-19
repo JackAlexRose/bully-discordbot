@@ -143,9 +143,10 @@ const sendMovieRequest = (interaction, args, watchlist) => {
             return;
         }
 
-        const embed = new Discord.MessageEmbed().setTitle(responseData.Title + ' (' + responseData.Year + ')');
+        const embed = new Discord.MessageEmbed().setTitle(responseData.Title);
 
         embed.addFields(
+            { name: "Year", value: responseData.Year },
             { name: "Runtime", value: responseData.Runtime },
             { name: "IMDB Rating", value: responseData.imdbRating },
             { name: "Genre", value: responseData.Genre },
@@ -185,7 +186,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
     // Now the message has been cached and is fully available
     console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction from "${user}`);
-    console.log(reaction.message);
+    console.log("TEST Message: ", reaction.message);
+    console.log("TEST Reaction: ", reaction);
 });
 
 const getApp = (guildId) => {
