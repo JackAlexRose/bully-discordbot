@@ -41,14 +41,14 @@ client.on('ready', async () => {
         }
     });
 
-    await getApp(guildId).commands.post({
+    await getApp().commands.post({
         data: {
             name: 'bulldogs',
             description: 'Whistle Bully'
         }
     });
 
-    await getApp(guildId).commands.post({
+    await getApp().commands.post({
         data: {
             name: 'movie',
             description: 'Display information about a given movie',
@@ -124,7 +124,7 @@ client.on('ready', async () => {
                         { name: "Director", value: responseData.Director },
                         { name: "Actors", value: responseData.Actors },
                         { name: "Plot", value: responseData.Plot },
-                        { name: "Trailer", value: "https://www.youtube.com/watch?v=KfL_V_YaHj8" }
+                        //{ name: "Trailer", value: "https://www.youtube.com/watch?v=KfL_V_YaHj8" }
                     )
 
                     embed.setImage(responseData.Poster);
