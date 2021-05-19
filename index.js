@@ -98,9 +98,9 @@ client.on('ready', async () => {
 
                 reply(interaction, embed);
             case 'movie':
-                args.name = args.name.replace(/ /g, "+");
+                args.title = args.title.replace(/ /g, "+");
 
-                const requestUrl = movieUrl + args.name;
+                const requestUrl = movieUrl + args.title;
 
                 makeRequest('GET', requestUrl, function (err, data) {
                     if (err) {
