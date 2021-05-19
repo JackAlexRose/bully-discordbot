@@ -187,6 +187,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
 
     console.log('I got to here');
+    console.log(reaction._emoji.name, ' ', reaction.message.author, ' ', user.bot);
 
     // Now the message has been cached and is fully available
     if (reaction._emoji.name === '📋' && reaction.message.author == '<@713014610344804422>' && !user.bot) {
