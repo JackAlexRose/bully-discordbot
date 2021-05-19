@@ -5,16 +5,6 @@ const client = new Discord.Client();
 
 const guildId = '713782418057855057';
 
-const getApp = (guildId) => {
-    const app = client.api.applications(client.user.id);
-
-    if (guildId) {
-        app.guilds(guildId)
-    }
-
-    return app;
-}
-
 client.on('ready', async () => {
     console.log('Client is ready.');
 
@@ -35,13 +25,13 @@ client.on('ready', async () => {
             description: 'Displays an embed',
             options: [
                 {
-                    name: 'name',
+                    name: 'Name',
                     description: 'Your name',
                     required: true,
                     type: 3 // string
                 },
                 {
-                    name: 'age',
+                    name: 'Age',
                     description: 'Your age',
                     required: false,
                     type: 4 // integer
@@ -111,6 +101,16 @@ client.on('ready', async () => {
         }
     })
 })
+
+const getApp = (guildId) => {
+    const app = client.api.applications(client.user.id);
+
+    if (guildId) {
+        app.guilds(guildId)
+    }
+
+    return app;
+}
 
 const reply = async (interaction, response) => {
     let data = {
