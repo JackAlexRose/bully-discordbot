@@ -161,7 +161,7 @@ const sendMovieRequest = (interaction, args, watchlist) => {
             const user = client.users.cache.get(interaction.member.user.id);
             user.send(embed).catch(console.error);
             const addedEmbed = new Discord.MessageEmbed();
-            addedEmbed.addField('Check your DMs ;)', '');
+            addedEmbed.addField('Added ' + responseData.Title, 'Check your DMs ;)');
             reply(interaction, addedEmbed);
             return;
         }
