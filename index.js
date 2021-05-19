@@ -113,10 +113,10 @@ client.on('ready', async () => {
 
                 reply(interaction, embed);
             case 'movie':
-                sendMovieRequest(args, false);
+                sendMovieRequest(interaction, args, false);
                 break;
             case 'watchlist':
-                sendMovieRequest(args, true);
+                sendMovieRequest(interaction, args, true);
                 break;
             default:
                 console.log("Command not recognised")
@@ -125,7 +125,7 @@ client.on('ready', async () => {
     })
 })
 
-const sendMovieRequest = (args, watchlist) => {
+const sendMovieRequest = (interaction, args, watchlist) => {
     args.name = args.name.replace(/ /g, "+");
 
     const requestUrl = movieUrl + args.name;
