@@ -118,8 +118,8 @@ client.on('ready', async () => {
                     const embed = new Discord.MessageEmbed().setTitle(responseData.Title + ' (' + responseData.Year + ')');
 
                     embed.addFields(
-                        { name: "Runtime", value: responseData.Runtime, inline: true },
-                        { name: "IMDB Rating", value: responseData.imdbRating, inline: true },
+                        { name: "Runtime", value: responseData.Runtime },
+                        { name: "IMDB Rating", value: responseData.imdbRating },
                         { name: "Genre", value: responseData.Genre },
                         { name: "Director", value: responseData.Director },
                         { name: "Actors", value: responseData.Actors },
