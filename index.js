@@ -25,13 +25,13 @@ client.on('ready', async () => {
             description: 'Displays an embed',
             options: [
                 {
-                    name: 'Name',
+                    name: 'name',
                     description: 'Your name',
                     required: true,
                     type: 3 // string
                 },
                 {
-                    name: 'Age',
+                    name: 'age',
                     description: 'Your age',
                     required: false,
                     type: 4 // integer
@@ -74,6 +74,7 @@ client.on('ready', async () => {
         if (options) {
             for (const option of options) {
                 const { name, value } = option;
+                name = capitalizeFirstLetter(name);
                 args[name] = value;
             }
         }
@@ -136,6 +137,10 @@ const createApiMessage = async (interaction, content) => {
     ).resolveData().resolveFiles();
 
     return { ...data, files };
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 client.login(process.env.token);
