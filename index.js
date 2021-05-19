@@ -73,9 +73,9 @@ client.on('ready', async () => {
 
         if (options) {
             for (const option of options) {
-                var { name, value } = option;
-                name = capitalizeFirstLetter(name);
-                args[name] = value;
+                const title = capitalizeFirstLetter(option.name);
+                const value = option.value;
+                args[title] = value;
             }
         }
 
