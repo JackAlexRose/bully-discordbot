@@ -194,14 +194,12 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 client.on('message', message => {
     try {
-        console.log('test');
         if (message.author.id == '713014610344804422' && Object.values(message.embeds[0]?.fields[0]).includes("Year")) {
             message.react('📋');
         };
-        console.log('complete');
     }
     catch (error) {
-        console.log(error)
+        console.log("Not a movie embed, skipping");
     }
 });
 
