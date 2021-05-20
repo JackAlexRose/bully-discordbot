@@ -165,6 +165,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
     // Now the message has been cached and is fully available
     if (reaction.message.author.id == '713014610344804422' && !user.bot) {
+        console.log(reaction._emoji.name);
         const movieTitle = reaction.message.embeds[0].title;
 
         if (reaction._emoji.name === '📋') {
