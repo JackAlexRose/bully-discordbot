@@ -106,10 +106,7 @@ client.on('ready', async () => {
                 sendMovieRequest(interaction, args.name);
                 break;
             case 'pitchfork':
-                p4k.getBestNewAlbums()
-                    .then((albums) => {
-                        console.log(albums);
-                    });
+                newPitchforkAlbum();
                 break;
             default:
                 console.log("Command not recognised")
@@ -240,6 +237,26 @@ const createApiMessage = async (interaction, content) => {
     ).resolveData().resolveFiles();
 
     return { ...data, files };
+}
+
+const newPitchforkAlbum = () => {
+    const myGuild = client.guilds.get(guildId);
+    const memoryChannel = myGuild.channels.get('845043427761717258');
+
+    memoryChannel.messages.fetch({ limit: 1 }).then(messages => {
+        const lastMessage = messages.first();
+        const lastMessageObject = JSON.parse(lastMessage);
+
+        p4k.getBestNewAlbums().then((albums) => {
+            if (albums[0].title !== lastMessageObject.title) {
+                var trackInfoObject = {};
+                ['artist', 'title', 'genres', 'score', 'abstract'].forEach(prop => trackInfoObject[prop] = albums[0][prop]);
+                memoryChannel.send(JSON.stringify(trackInfoObject));
+            }
+        });
+
+    })
+        .catch(console.error);
 }
 
 function capitalizeFirstLetter(string) {
