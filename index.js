@@ -245,16 +245,19 @@ const newPitchforkAlbum = () => {
 
     memoryChannel.messages.fetch({ limit: 1 }).then(messages => {
         const lastMessage = messages.first();
-        const lastMessageObject = JSON.parse(lastMessage);
 
-        p4k.getBestNewAlbums().then((albums) => {
-            if (albums[0].title !== lastMessageObject.title) {
-                var trackInfoObject = {};
-                ['artist', 'title', 'genres', 'score', 'abstract'].forEach(prop => trackInfoObject[prop] = albums[0][prop]);
-                memoryChannel.send(JSON.stringify(trackInfoObject));
-            }
-        });
+        if (lastMessage) {
+            const lastMessageObject = JSON.parse(lastMessage);
 
+
+            p4k.getBestNewAlbums().then((albums) => {
+                if (albums[0].title !== lastMessageObject.title) {
+                    var trackInfoObject = {};
+                    ['artist', 'title', 'genres', 'score', 'abstract'].forEach(prop => trackInfoObject[prop] = albums[0][prop]);
+                    memoryChannel.send(JSON.stringify(trackInfoObject));
+                }
+            });
+        }
     })
         .catch(console.error);
 }
