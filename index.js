@@ -139,7 +139,7 @@ const sendMovieRequest = (interaction, movieName, user = '') => {
 
         if (user) {
             user.send('Hey, you asked me to add this movie to your watchlist:');
-            embed.setFooter('Hit the :white_check_mark: below to remove this movie from your watchlist')
+            embed.setFooter('Hit the ✅ below to remove this movie from your watchlist')
             user.send(embed).catch(console.error);
             return;
         }
@@ -184,7 +184,7 @@ client.on('message', message => {
             if (message.channel.type !== 'dm') {
                 message.react('📋');
             } else {
-                message.react(':white_check_mark:');
+                message.react('✅');
             }
         };
     }
