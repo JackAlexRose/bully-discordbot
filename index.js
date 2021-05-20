@@ -139,6 +139,7 @@ const sendMovieRequest = (interaction, movieName, user = '') => {
 
         if (user) {
             user.send('Hey, you asked me to add this movie to your watchlist:');
+            embed.setFooter('Hit the :white_check_mark: below to remove this movie from your watchlist')
             user.send(embed).catch(console.error);
             return;
         }
@@ -163,17 +164,28 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
 
     // Now the message has been cached and is fully available
-    if (reaction._emoji.name === '📋' && reaction.message.author.id == '713014610344804422' && !user.bot) {
+    if (reaction.message.author.id == '713014610344804422' && !user.bot) {
         const movieTitle = reaction.message.embeds[0].title;
-        console.log('Add to watchlist: ', movieTitle, ' for: ', user.username);
-        sendMovieRequest(undefined, movieTitle, user);
+
+        if (reaction._emoji.name === '📋') {
+            console.log('Add to watchlist: ', movieTitle, ' for: ', user.username);
+            sendMovieRequest(undefined, movieTitle, user);
+        }
+        else if (reaction._emoji.name === ':white_check_mark:') {
+            console.log('Removing from watchlist: ', movieTitle, ' for: ', user.username);
+            reaction.message.delete();
+        }
     }
 });
 
 client.on('message', message => {
     try {
-        if (message.channel.type !== 'dm' && message.author.id == '713014610344804422' && Object.values(message.embeds[0]?.fields[0]).includes("Year")) {
-            message.react('📋');
+        if (message.author.id == '713014610344804422' && Object.values(message.embeds[0]?.fields[0]).includes("Year")) {
+            if (message.channel.type !== 'dm') {
+                message.react('📋');
+            } else {
+                message.react(':white_check_mark:');
+            }
         };
     }
     catch (error) {
