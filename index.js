@@ -254,7 +254,7 @@ const newPitchforkAlbum = () => {
         }
 
         p4k.getBestNewAlbums().then((albums) => {
-            if (albums[0].title !== lastMessageObject.title) {
+            if (!lastMessageObject || albums[0].title !== lastMessageObject.title) {
                 var trackInfoObject = {};
                 ['artist', 'title', 'genres', 'score', 'abstract'].forEach(prop => trackInfoObject[prop] = albums[0][prop]);
                 console.log("TEST track info: ", trackInfoObject);
