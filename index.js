@@ -162,7 +162,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
             return;
         }
     }
-    console.log(reaction._emoji.name);
 
     // Now the message has been cached and is fully available
     if (reaction.message.author.id == '713014610344804422' && !user.bot) {
