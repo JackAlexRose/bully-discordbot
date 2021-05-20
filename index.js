@@ -113,6 +113,8 @@ client.on('ready', async () => {
                 break;
         }
     })
+
+    newPitchforkAlbum();
 })
 
 const sendMovieRequest = (interaction, movieName, user = '') => {
@@ -242,15 +244,19 @@ const createApiMessage = async (interaction, content) => {
 const newPitchforkAlbum = () => {
     const myGuild = client.guilds.cache.get(guildId);
     const memoryChannel = myGuild.channels.cache.get('845043427761717258');
-    console.log("TEST Memory channel: ", memoryChannel);
 
     memoryChannel.messages.fetch({ limit: 1 }).then(messages => {
         const lastMessage = messages.first();
-        console.log("TEST Last message: ", lastMessage);
         var lastMessageObject;
 
         if (lastMessage) {
-            lastMessageObject = JSON.parse(lastMessage);
+            try {
+                lastMessageObject = JSON.parse(lastMessage);
+            }
+            catch (error) {
+                console.log("Failed to parse last message as object");
+                lastMessageObject = undefined;
+            }
         }
 
         p4k.getBestNewAlbums().then((albums) => {
