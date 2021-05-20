@@ -162,17 +162,17 @@ client.on('messageReactionAdd', async (reaction, user) => {
             return;
         }
     }
+    console.log(reaction._emoji.name);
 
     // Now the message has been cached and is fully available
     if (reaction.message.author.id == '713014610344804422' && !user.bot) {
-        console.log(reaction._emoji.name);
         const movieTitle = reaction.message.embeds[0].title;
 
         if (reaction._emoji.name === '📋') {
             console.log('Add to watchlist: ', movieTitle, ' for: ', user.username);
             sendMovieRequest(undefined, movieTitle, user);
         }
-        else if (reaction._emoji.name === ':white_check_mark:') {
+        else if (reaction._emoji.name === '✅') {
             console.log('Removing from watchlist: ', movieTitle, ' for: ', user.username);
             reaction.message.delete();
         }
