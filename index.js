@@ -1,4 +1,5 @@
 var XMLHttpRequest = require('xhr2');
+const p4k = require('pitchfork-bnm');
 
 const Discord = require('discord.js');
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
@@ -17,6 +18,13 @@ client.on('ready', async () => {
         data: {
             name: 'ping',
             description: 'A simple ping pong command'
+        }
+    });
+
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'pitchfork',
+            description: 'Get best new music from pitchfork'
         }
     });
 
@@ -96,6 +104,12 @@ client.on('ready', async () => {
                 break;
             case 'movie':
                 sendMovieRequest(interaction, args.name);
+                break;
+            case 'pitchfork':
+                p4k.getBestNewAlbums()
+                    .then((albums) => {
+                        console.log(albums);
+                    });
                 break;
             default:
                 console.log("Command not recognised")
