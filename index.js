@@ -240,7 +240,7 @@ const createApiMessage = async (interaction, content) => {
 }
 
 const newPitchforkAlbum = () => {
-    const myGuild = client.guilds.get(guildId);
+    const myGuild = client.guilds.cache.get(guildId);
     const memoryChannel = myGuild.channels.get('845043427761717258');
 
     memoryChannel.messages.fetch({ limit: 1 }).then(messages => {
