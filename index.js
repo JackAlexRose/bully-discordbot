@@ -242,9 +242,11 @@ const createApiMessage = async (interaction, content) => {
 const newPitchforkAlbum = () => {
     const myGuild = client.guilds.cache.get(guildId);
     const memoryChannel = myGuild.channels.cache.get('845043427761717258');
+    console.log("TEST Memory channel: ", memoryChannel);
 
     memoryChannel.messages.fetch({ limit: 1 }).then(messages => {
         const lastMessage = messages.first();
+        console.log("TEST Last message: ", lastMessage);
 
         if (lastMessage) {
             const lastMessageObject = JSON.parse(lastMessage);
@@ -254,6 +256,7 @@ const newPitchforkAlbum = () => {
                 if (albums[0].title !== lastMessageObject.title) {
                     var trackInfoObject = {};
                     ['artist', 'title', 'genres', 'score', 'abstract'].forEach(prop => trackInfoObject[prop] = albums[0][prop]);
+                    console.log("TEST track info: ", trackInfoObject);
                     memoryChannel.send(JSON.stringify(trackInfoObject));
                 }
             });
