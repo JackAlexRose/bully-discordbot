@@ -166,14 +166,13 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
     // Now the message has been cached and is fully available
     if (reaction.message.author.id == '713014610344804422' && !user.bot) {
-        const movieTitle = reaction.message.embeds[0].title;
-
         if (reaction._emoji.name === '📋') {
+            const movieTitle = reaction.message.embeds[0].title;
             console.log('Add to watchlist: ', movieTitle, ' for: ', user.username);
             sendMovieRequest(undefined, movieTitle, user);
         }
         else if (reaction._emoji.name === '✅') {
-            console.log('Removing from watchlist: ', movieTitle, ' for: ', user.username);
+            console.log('Removing from dms for: ', user.username);
             reaction.message.delete();
         }
     }
