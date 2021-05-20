@@ -138,7 +138,7 @@ const sendMovieRequest = (interaction, movieName, user = '') => {
         embed.setImage(responseData.Poster);
 
         if (user) {
-            user.send('Hey, you asked me to add this movie to your watchlist:').then(msg => msg.delete(10000));
+            user.send('Hey, you asked me to add this movie to your watchlist:').then(msg => msg.delete({ timeout: 10000 }));
             embed.setFooter('Hit the ✅ below to remove this movie from your watchlist')
             user.send(embed).catch(console.error);
             return;
