@@ -171,7 +171,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
             console.log('Add to watchlist: ', movieTitle, ' for: ', user.username);
             sendMovieRequest(undefined, movieTitle, user);
         }
-        else if (reaction._emoji.name === '✅') {
+        else if (reaction._emoji.name === '✅' && reaction.message.channel.type === 'dm') {
             console.log('Removing from dms for: ', user.username);
             reaction.message.delete();
         }
