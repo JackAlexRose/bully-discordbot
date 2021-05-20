@@ -265,6 +265,9 @@ const newPitchforkAlbum = () => {
                 ['artist', 'title', 'genres', 'score', 'abstract'].forEach(prop => trackInfoObject[prop] = albums[0][prop]);
                 memoryChannel.send(JSON.stringify(trackInfoObject));
             }
+            else {
+                console.log("Pitchfork album has already been posted, skipping");
+            }
         });
     })
         .catch(console.error);
