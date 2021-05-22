@@ -137,7 +137,7 @@ client.on('ready', async () => {
                 }
                 break;
             case 'gameboy':
-                const buttonPressed = args?.button?.trim();
+                const buttonPressed = args?.button?.toUpperCase().trim();
                 const myGuild = client.guilds.cache.get(testGuildId);
                 const testingChannel = myGuild.channels.cache.get(botTestingChannelId);
 
