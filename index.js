@@ -138,12 +138,13 @@ client.on('ready', async () => {
                 break;
             case 'gameboy':
                 console.log(args);
-                console.log(args.button);
+                console.log(args.button.toUpperCase());
                 const buttonPressed = args?.button?.toString().toUpperCase().trim();
                 const myGuild = client.guilds.cache.get(testGuildId);
                 const testingChannel = myGuild.channels.cache.get(botTestingChannelId);
 
                 if (buttonPressed && gameboyKeyMap.includes(buttonPressed)) {
+                    console.log(buttonPressed);
                     gameboy.pressKey(Gameboy.KEYMAP[buttonPressed]);
                     startGameboyFrameProcessing();
                     setTimeout(() => {
