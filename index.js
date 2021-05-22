@@ -386,7 +386,7 @@ const startGameboyFrameProcessing = () => {
 }
 
 const pressGameboyKey = (interaction, key, amount) => {
-    for (var i = 0; i < gameboyFrameRate / 2; i++) {
+    for (var i = 0; i < 4; i++) {
         gameboy.pressKey(key);
         gameboy.doFrame();
     }
@@ -402,8 +402,8 @@ const pressGameboyKey = (interaction, key, amount) => {
             else {
                 pressGameboyKey(interaction, key, amount - 1);
             }
-        }, 500)
-    }, 1500)
+        }, 100)
+    }, 500)
 }
 
 client.login(process.env.token);
