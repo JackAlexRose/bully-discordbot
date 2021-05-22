@@ -377,7 +377,6 @@ const startGameboyFrameProcessing = () => {
 
     gameboyIntervalHandle = setInterval(() => {
         gameboy.doFrame();
-        console.log("frame done");
     }, 1000 / 120)
 
     gameboyTimeoutHandle = setTimeout(() => {
