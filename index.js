@@ -143,6 +143,9 @@ client.on('ready', async () => {
 
                 if (buttonPressed && gameboyKeyMap.includes(buttonPressed)) {
                     gameboy.pressKey(buttonPressed);
+                    gameboy.doFrame();
+                    gameboy.doFrame();
+
                     startGameboyFrameProcessing();
                     setTimeout(() => {
                         gameboyScreenshot();
@@ -374,6 +377,7 @@ const startGameboyFrameProcessing = () => {
 
     gameboyIntervalHandle = setInterval(() => {
         gameboy.doFrame();
+        console.log("frame done");
     }, 1000 / 120)
 
     gameboyTimeoutHandle = setTimeout(() => {
