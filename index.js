@@ -18,7 +18,7 @@ const rom = readFileSync('./PokemonRed.gb');
 const gameboy = new Gameboy();
 var gameboyTimeoutHandle = null;
 var gameboyIntervalHandle = null;
-const gameboyFrameRate = 120;
+const gameboyFrameRate = 240;
 
 const gameboyKeyMap = ['RIGHT', 'LEFT', 'UP', 'DOWN', 'A', 'B', 'SELECT', 'START'];
 
@@ -158,7 +158,7 @@ client.on('ready', async () => {
                             const channel = client.channels.resolve(interaction.channel_id);
                             channel.send({ files: ['./screen.png'] });
                         }, 500)
-                    }, 2000)
+                    }, 2500)
                 }
                 else if (buttonPressed == "HELP") {
                     const embed = new Discord.MessageEmbed().setTitle('Gameboy User Manual');
