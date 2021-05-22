@@ -396,11 +396,11 @@ const pressGameboyKey = (interaction, key, amount) => {
         gameboyScreenshot();
         setTimeout(() => {
             const channel = client.channels.resolve(interaction.channel_id);
-            if (amount < 1) {
+            if (amount <= 1) {
                 channel.send({ files: ['./screen.png'] });
             }
             else {
-                pressGameboyKey(key, amount - 1);
+                pressGameboyKey(interaction, key, amount - 1);
             }
         }, 500)
     }, 1500)
