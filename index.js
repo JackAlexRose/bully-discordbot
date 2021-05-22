@@ -1,5 +1,5 @@
 const Gameboy = require("serverboy");
-const { readFileSync, writeFileSync } = require("fs");
+const { readFileSync, writeFileSync, writeFile, fstat } = require("fs");
 
 var PNG = require("pngjs").PNG;
 
@@ -439,11 +439,18 @@ const gameboySaveGame = () => {
 
         const saveDataArray = gameboy.getSaveData();
         if (saveDataArray) {
-            if (lastMessage) {
-                lastMessage.delete();
-            }
-
-            saveGameChannel.send(saveDataArray);
+            writeFile('testfile', Buffer.from(saveDataArray), (err) => {
+                if (err) {
+                    console.log('Error writing to file')
+                }
+                else {
+                    console.log('Successfully saved');
+                    if (lastMessage) {
+                        lastMessage.delete();
+                    }
+                    saveGameChannel.send({ files: ['./testfile'] });
+                }
+            });
         }
     })
 }
