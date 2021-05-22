@@ -146,13 +146,19 @@ client.on('ready', async () => {
                     gameboy.doFrame();
                     gameboy.doFrame();
 
+                    const embed = new Discord.MessageEmbed();
+
+                    embed.addFields({ name: `${buttonPressed} Button Pressed`, value: "Processing frames..." });
+                    reply(interaction, embed);
+
                     startGameboyFrameProcessing();
                     setTimeout(() => {
                         gameboyScreenshot();
                         setTimeout(() => {
-                            testingChannel.send({ files: ['./screen.png'] });
+                            const channel = client.channels.resolve(interaction.channel_id);
+                            channel.send({ files: ['./screen.png'] });
                         }, 500)
-                    }, 5000)
+                    }, 2000)
                 }
                 else if (buttonPressed == "HELP") {
                     const embed = new Discord.MessageEmbed().setTitle('Gameboy User Manual');
