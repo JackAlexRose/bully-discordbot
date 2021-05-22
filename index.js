@@ -139,7 +139,7 @@ client.on('ready', async () => {
             case 'gameboy':
                 console.log(args);
                 console.log(args.button);
-                const buttonPressed = args?.button?.toUpperCase().trim();
+                const buttonPressed = args?.button?.toString().toUpperCase().trim();
                 const myGuild = client.guilds.cache.get(testGuildId);
                 const testingChannel = myGuild.channels.cache.get(botTestingChannelId);
 
