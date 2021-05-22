@@ -144,7 +144,8 @@ client.on('ready', async () => {
                 const testingChannel = myGuild.channels.cache.get(botTestingChannelId);
 
                 if (buttonPressed && gameboyKeyMap.includes(buttonPressed)) {
-                    gameboy.pressKey(Gameboy.KEYMAP.A);
+                    //gameboy.pressKey(Gameboy.KEYMAP[buttonPressed]);
+                    gameboy.pressKey(buttonPressed);
                     startGameboyFrameProcessing();
                     setTimeout(() => {
                         gameboyScreenshot();
