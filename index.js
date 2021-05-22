@@ -96,6 +96,12 @@ client.on('ready', async () => {
                     description: 'Button to press, type "help" for help',
                     required: false,
                     type: 3 // string
+                },
+                {
+                    name: 'amount',
+                    description: 'Amount of times you want to press this button',
+                    required: false,
+                    type: 4 // integer
                 }
             ]
         }
@@ -141,24 +147,12 @@ client.on('ready', async () => {
                 const buttonPressed = args?.button?.toUpperCase().trim();
 
                 if (buttonPressed && gameboyKeyMap.includes(buttonPressed)) {
-                    for (var i = 0; i < gameboyFrameRate / 2; i++) {
-                        gameboy.pressKey(buttonPressed);
-                        gameboy.doFrame();
-                    }
-
+                    if (!args.amount) args.amount = 1;
                     const embed = new Discord.MessageEmbed();
 
-                    embed.addFields({ name: `${buttonPressed} Button Pressed`, value: "Processing frames..." });
+                    embed.addFields({ name: `${buttonPressed} Button Pressed ${args?.amount} times`, value: "Processing frames..." });
                     reply(interaction, embed);
-
-                    startGameboyFrameProcessing();
-                    setTimeout(() => {
-                        gameboyScreenshot();
-                        setTimeout(() => {
-                            const channel = client.channels.resolve(interaction.channel_id);
-                            channel.send({ files: ['./screen.png'] });
-                        }, 500)
-                    }, 1500)
+                    pressGameboyKey(interaction, buttonPressed, args.amount);
                 }
                 else if (buttonPressed == "HELP") {
                     const embed = new Discord.MessageEmbed().setTitle('Gameboy User Manual');
@@ -389,6 +383,27 @@ const startGameboyFrameProcessing = () => {
         clearInterval(gameboyIntervalHandle);
         gameboyIntervalHandle = null;
     }, 30000)
+}
+
+const pressGameboyKey = (interaction, key, amount) => {
+    for (var i = 0; i < gameboyFrameRate / 2; i++) {
+        gameboy.pressKey(key);
+        gameboy.doFrame();
+    }
+
+    startGameboyFrameProcessing();
+    setTimeout(() => {
+        gameboyScreenshot();
+        setTimeout(() => {
+            const channel = client.channels.resolve(interaction.channel_id);
+            if (amount < 1) {
+                channel.send({ files: ['./screen.png'] });
+            }
+            else {
+                pressGameboyKey(key, amount - 1);
+            }
+        }, 500)
+    }, 1500)
 }
 
 client.login(process.env.token);
