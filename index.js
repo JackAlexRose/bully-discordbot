@@ -158,7 +158,7 @@ client.on('ready', async () => {
                             const channel = client.channels.resolve(interaction.channel_id);
                             channel.send({ files: ['./screen.png'] });
                         }, 500)
-                    }, 2500)
+                    }, 1500)
                 }
                 else if (buttonPressed == "HELP") {
                     const embed = new Discord.MessageEmbed().setTitle('Gameboy User Manual');
