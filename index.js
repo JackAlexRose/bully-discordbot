@@ -10,7 +10,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
 const testGuildId = '713782418057855057';
-const botTestingChannelId = '766664743225262141';
+const pokemonSaveChannel = '845804600652464158';
 const movieUrl = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
 
 const rom = readFileSync('./PokemonRed.gb');
@@ -161,6 +161,12 @@ client.on('ready', async () => {
                     )
 
                     reply(interaction, embed);
+                }
+                else if (buttonPressed == "SAVE") {
+                    gameboySaveGame();
+                }
+                else {
+                    startGameboyFrameProcessing();
                 }
                 break;
             case 'pitchfork':
@@ -404,6 +410,45 @@ const pressGameboyKey = (interaction, key, amount) => {
             }
         }, 100)
     }, 500)
+}
+
+const gameboyLoadSaveGame = () => {
+    const saveGameChannel = getSaveGameChannel();
+
+    saveGameChannel.messages.fetch({ limit: 1 }).then(messages => {
+        const lastMessage = messages.first();
+        var lastMessageObject;
+
+        if (lastMessage) {
+            try {
+                lastMessageObject = JSON.parse(lastMessage);
+            }
+            catch (error) {
+                console.log("Failed to parse last message as object");
+                lastMessageObject = undefined;
+            }
+        }
+    })
+}
+
+const gameboySaveGame = () => {
+    const saveGameChannel = getSaveGameChannel();
+
+    saveGameChannel.messages.fetch({ limit: 1 }).then(messages => {
+        const lastMessage = messages.first();
+
+        const saveDataArray = gameboy.getSaveData();
+        if (saveDataArray) {
+            lastMessage.delete();
+
+            saveGameChannel.send(saveDataArray);
+        }
+    })
+}
+
+const getSaveGameChannel = () => {
+    const myGuild = client.guilds.cache.get(testGuildId);
+    return myGuild.channels.cache.get(pokemonSaveChannel);
 }
 
 client.login(process.env.token);
