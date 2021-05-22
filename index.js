@@ -139,8 +139,6 @@ client.on('ready', async () => {
                 break;
             case 'gameboy':
                 const buttonPressed = args?.button?.toUpperCase().trim();
-                const myGuild = client.guilds.cache.get(testGuildId);
-                const testingChannel = myGuild.channels.cache.get(botTestingChannelId);
 
                 if (buttonPressed && gameboyKeyMap.includes(buttonPressed)) {
                     for (var i = 0; i < gameboyFrameRate / 2; i++) {
@@ -160,7 +158,7 @@ client.on('ready', async () => {
                             const channel = client.channels.resolve(interaction.channel_id);
                             channel.send({ files: ['./screen.png'] });
                         }, 500)
-                    }, 4000)
+                    }, 2000)
                 }
                 else if (buttonPressed == "HELP") {
                     const embed = new Discord.MessageEmbed().setTitle('Gameboy User Manual');
