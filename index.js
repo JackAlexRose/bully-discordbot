@@ -18,6 +18,7 @@ const rom = readFileSync('./PokemonRed.gb');
 const gameboy = new Gameboy();
 var gameboyTimeoutHandle = null;
 var gameboyIntervalHandle = null;
+const gameboyFrameRate = 120;
 
 const gameboyKeyMap = ['RIGHT', 'LEFT', 'UP', 'DOWN', 'A', 'B', 'SELECT', 'START'];
 
@@ -142,9 +143,10 @@ client.on('ready', async () => {
                 const testingChannel = myGuild.channels.cache.get(botTestingChannelId);
 
                 if (buttonPressed && gameboyKeyMap.includes(buttonPressed)) {
-                    gameboy.pressKey(buttonPressed);
-                    gameboy.doFrame();
-                    gameboy.doFrame();
+                    for (var i = 0; i < gameboyFrameRate / 2; i++) {
+                        gameboy.pressKey(buttonPressed);
+                        gameboy.doFrame();
+                    }
 
                     const embed = new Discord.MessageEmbed();
 
@@ -157,7 +159,7 @@ client.on('ready', async () => {
                         setTimeout(() => {
                             const channel = client.channels.resolve(interaction.channel_id);
                             channel.send({ files: ['./screen.png'] });
-                        }, 1000)
+                        }, 500)
                     }, 4000)
                 }
                 else if (buttonPressed == "HELP") {
@@ -383,7 +385,7 @@ const startGameboyFrameProcessing = () => {
 
     gameboyIntervalHandle = setInterval(() => {
         gameboy.doFrame();
-    }, 1000 / 120)
+    }, 1000 / gameboyFrameRate)
 
     gameboyTimeoutHandle = setTimeout(() => {
         clearInterval(gameboyIntervalHandle);
