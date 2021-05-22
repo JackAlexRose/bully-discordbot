@@ -439,7 +439,9 @@ const gameboySaveGame = () => {
 
         const saveDataArray = gameboy.getSaveData();
         if (saveDataArray) {
-            lastMessage.delete();
+            if (lastMessage) {
+                lastMessage.delete();
+            }
 
             saveGameChannel.send(saveDataArray);
         }
