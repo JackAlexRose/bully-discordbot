@@ -88,7 +88,7 @@ client.on('ready', async () => {
     await getApp(testGuildId).commands.post({
         data: {
             name: 'gameboy',
-            description: '',
+            description: 'Pokemon Red on a Gameboy Emulator',
             options: [
                 {
                     name: 'button',
@@ -153,7 +153,6 @@ client.on('ready', async () => {
                 }
                 else if (buttonPressed == "HELP") {
                     const embed = new Discord.MessageEmbed().setTitle('Gameboy User Manual');
-                    ['RIGHT', 'LEFT', 'UP', 'DOWN', 'A', 'B', 'SELECT', 'START']
                     embed.addFields(
                         { name: "Buttons", value: "Type /gameboy and one of the available buttons: a, b, left, down, right, up, select or start" }
                     )
