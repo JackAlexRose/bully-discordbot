@@ -1,34 +1,49 @@
+import Gameboy from "serverboy";
+import { readFileSync, writeFileSync } from "fs";
+import { normalize } from "path";
+
+var PNG = require("pngjs").PNG;
+
 var XMLHttpRequest = require('xhr2');
 const p4k = require('pitchfork-bnm');
 
 const Discord = require('discord.js');
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
-const guildId = '713782418057855057';
+const testGuildId = '713782418057855057';
+const botTestingChannelId = '766664743225262141';
 const movieUrl = "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t="
+
+const rom = readFileSync('./PokemonRed.gb');
+
+const gameboy = new Gameboy();
+var gameboyTimeoutHandle = null;
+var gameboyIntervalHandle = null;
+
+const gameboyKeyMap = ['RIGHT', 'LEFT', 'UP', 'DOWN', 'A', 'B', 'SELECT', 'START'];
 
 client.on('ready', async () => {
     console.log('Client is ready.');
 
-    const commands = await getApp(guildId).commands.get();
+    const commands = await getApp(testGuildId).commands.get();
 
     console.log(commands);
 
-    await getApp(guildId).commands.post({
+    await getApp(testGuildId).commands.post({
         data: {
             name: 'ping',
             description: 'A simple ping pong command'
         }
     });
 
-    await getApp(guildId).commands.post({
+    await getApp(testGuildId).commands.post({
         data: {
             name: 'pitchfork',
             description: 'Get best new music from pitchfork'
         }
     });
 
-    await getApp(guildId).commands.post({
+    await getApp(testGuildId).commands.post({
         data: {
             name: 'embed',
             description: 'Displays an embed',
@@ -71,10 +86,25 @@ client.on('ready', async () => {
         }
     });
 
+    await getApp(testGuildId).commands.post({
+        data: {
+            name: 'gameboy',
+            description: '',
+            options: [
+                {
+                    name: 'button',
+                    description: 'Button to press, type "help" for help',
+                    required: false,
+                    type: 3 // string
+                }
+            ]
+        }
+    })
+
     client.ws.on('INTERACTION_CREATE', async (interaction) => {
         const { name, options } = interaction.data;
 
-        const command = name.toLowerCase();
+        const command = name;
 
         const args = {};
 
@@ -103,7 +133,34 @@ client.on('ready', async () => {
                 reply(interaction, embed);
                 break;
             case 'movie':
-                sendMovieRequest(interaction, args.name);
+                if (args?.name) {
+                    sendMovieRequest(interaction, args.name);
+                }
+                break;
+            case 'gameboy':
+                const buttonPressed = args?.button?.toUpperCase?.().trim?.();
+                const myGuild = client.guilds.cache.get(testGuildId);
+                const testingChannel = myGuild.channels.cache.get(botTestingChannelId);
+
+                if (buttonPressed && gameboyKeyMap.includes(buttonPressed)) {
+                    gameboy.pressKey(Gameboy.KEYMAP[buttonPressed]);
+                    startGameboyFrameProcessing();
+                    setTimeout(() => {
+                        gameboyScreenshot();
+                        setTimeout(() => {
+                            testingChannel.send({ files: ['./screen.png'] });
+                        }, 500)
+                    }, 5000)
+                }
+                else if (buttonPressed == "HELP") {
+                    const embed = new Discord.MessageEmbed().setTitle('Gameboy User Manual');
+                    ['RIGHT', 'LEFT', 'UP', 'DOWN', 'A', 'B', 'SELECT', 'START']
+                    embed.addFields(
+                        { name: "Buttons", value: "Type /gameboy and one of the available buttons: a, b, left, down, right, up, select or start" }
+                    )
+
+                    reply(interaction, embed);
+                }
                 break;
             case 'pitchfork':
                 newPitchforkAlbum();
@@ -115,6 +172,10 @@ client.on('ready', async () => {
     })
 
     newPitchforkAlbum();
+
+    gameboy.loadRom(rom);
+
+    startGameboyFrameProcessing();
 })
 
 const sendMovieRequest = (interaction, movieName, user = '') => {
@@ -242,7 +303,7 @@ const createApiMessage = async (interaction, content) => {
 }
 
 const newPitchforkAlbum = () => {
-    const myGuild = client.guilds.cache.get(guildId);
+    const myGuild = client.guilds.cache.get(testGuildId);
     const memoryChannel = myGuild.channels.cache.get('845043427761717258');
 
     memoryChannel.messages.fetch({ limit: 1 }).then(messages => {
@@ -273,11 +334,11 @@ const newPitchforkAlbum = () => {
         .catch(console.error);
 }
 
-function capitalizeFirstLetter(string) {
+const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function makeRequest(method, url, done) {
+const makeRequest = (method, url, done) => {
     var xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.onload = function () {
@@ -287,6 +348,40 @@ function makeRequest(method, url, done) {
         done(xhr.response);
     };
     xhr.send();
+}
+
+const gameboyScreenshot = () => {
+    var screen = gameboy.getScreen();
+
+    var png = new PNG({ width: 160, height: 144 });
+    for (let i = 0; i < screen.length; i++) {
+        png.data[i] = screen[i];
+    }
+
+    var buffer = PNG.sync.write(png);
+
+    writeFileSync('screen.png', buffer);
+}
+
+const startGameboyFrameProcessing = () => {
+    if (gameboyTimeoutHandle) {
+        clearTimeout(gameboyTimeoutHandle);
+        gameboyTimeoutHandle = null;
+    }
+
+    if (gameboyIntervalHandle) {
+        clearInterval(gameboyIntervalHandle);
+        gameboyIntervalHandle = null;
+    }
+
+    gameboyIntervalHandle = setInterval(() => {
+        gameboy.doFrame();
+    }, 1000 / 60)
+
+    gameboyTimeoutHandle = setTimeout(() => {
+        clearInterval(gameboyIntervalHandle);
+        gameboyIntervalHandle = null;
+    }, 30000)
 }
 
 client.login(process.env.token);

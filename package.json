@@ -16,6 +16,7 @@
     "html-meta-tags": "^1.1.0",
     "node-fetch": "^2.6.0",
     "pitchfork-bnm": "^1.0.3",
+    "pngjs": "^6.0.0",
     "request": "^2.88.2",
     "serverboy": "0.0.6",
     "xhr2": "^0.2.0"
