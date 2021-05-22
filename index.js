@@ -1,6 +1,5 @@
-import Gameboy from "serverboy";
-import { readFileSync, writeFileSync } from "fs";
-import { normalize } from "path";
+const Gameboy = require("serverboy");
+const { readFileSync, writeFileSync } = require("fs");
 
 var PNG = require("pngjs").PNG;
 
