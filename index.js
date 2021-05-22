@@ -439,7 +439,7 @@ const gameboySaveGame = () => {
 
         const saveDataArray = gameboy.getSaveData();
         if (saveDataArray) {
-            writeFile('testfile', Buffer.from(saveDataArray), (err) => {
+            writeFile('testfile.txt', Buffer.from(saveDataArray), (err) => {
                 if (err) {
                     console.log('Error writing to file')
                 }
@@ -448,7 +448,7 @@ const gameboySaveGame = () => {
                     if (lastMessage) {
                         lastMessage.delete();
                     }
-                    saveGameChannel.send({ files: ['./testfile'] });
+                    saveGameChannel.send({ files: ['./testfile.txt'] });
                 }
             });
         }
