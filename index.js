@@ -402,20 +402,19 @@ const gameboyLoadSaveGame = () => {
 const gameboySaveGame = async () => {
   const saveGameChannel = getSaveGameChannel();
 
-  saveGameChannel.messages.fetch({ limit: 1 }).then((messages) => {
-    const lastMessage = messages.first();
+  const messages = await saveGameChannel.messages.fetch({ limit: 1 });
+  const lastMessage = messages.first();
 
-    try {
-      const response = await pokemonGameboy.saveSRAM();
-      console.log(response);
-      if (lastMessage) {
-        lastMessage.delete();
-      }
-      saveGameChannel.send({ files: ["./sramcontents.sav"] });
-    } catch (error) {
-      console.log("Error writing to file");
+  try {
+    const response = await pokemonGameboy.saveSRAM();
+    console.log(response);
+    if (lastMessage) {
+      lastMessage.delete();
     }
-  });
+    saveGameChannel.send({ files: ["./sramcontents.sav"] });
+  } catch (error) {
+    console.log("Error writing to file");
+  }
 };
 
 const getSaveGameChannel = () => {
