@@ -1,11 +1,12 @@
-const { GameboyManager } = require("./gameboyManager");
+const { HelperFunctions } = require("./helperFunctions");
+const { MovieManager } = require("./movieManager");
+const { GameboyManager, GameboyKeyMap } = require("./gameboyManager");
 const pokemonGameboy = new GameboyManager(
   "./PokemonRed.gb",
   240,
   "./pokemonRed.sav"
 );
 
-let XMLHttpRequest = require("xhr2");
 const p4k = require("pitchfork-bnm");
 
 const Discord = require("discord.js");
@@ -82,7 +83,7 @@ client.on("ready", async () => {
     },
   });
 
-  await getApp(testGuildId).commands.post({
+  await getApp().commands.post({
     data: {
       name: "pokemon",
       description: "Pokemon Red on a Gameboy Emulator",
@@ -125,14 +126,19 @@ client.on("ready", async () => {
         reply(interaction, "RUF RUF");
         break;
       case "embed":
-        const embed = new Discord.MessageEmbed().setTitle("Example Embed");
+        const exampleEmbed = new Discord.MessageEmbed().setTitle(
+          "Example Embed"
+        );
 
         for (const arg in args) {
           const value = args[arg];
-          embed.addField(capitalizeFirstLetter(arg), value);
+          exampleEmbed.addField(
+            HelperFunctions.capitalizeFirstLetter(arg),
+            value
+          );
         }
 
-        reply(interaction, embed);
+        reply(interaction, exampleEmbed);
         break;
       case "movie":
         if (args?.name) {
@@ -165,7 +171,7 @@ client.on("ready", async () => {
               "Please ensure you have saved ingame before running this command",
           });
           gameboySaveGame();
-        } else {
+        } else if (GameboyKeyMap.includes(buttonPressed)) {
           if (!args.amount) args.amount = 1;
 
           if (args.amount >= 100 || args.amount < 1) {
@@ -179,12 +185,17 @@ client.on("ready", async () => {
               value: "Processing frames...",
             });
 
-            pokemonGameboy.pressKey(buttonPressed, args.amount, () => {
+            pokemonGameboy.pressKey(buttonPressed, args.amount).then(() => {
               client.channels
                 .resolve(interaction.channel_id)
                 .send({ files: ["./screen.png"] });
             });
           }
+        } else {
+          pokemonEmbed.addFields({
+            name: "Invalid button press",
+            value: "Type help for gameboy button if you need to see the manual",
+          });
         }
 
         reply(interaction, pokemonEmbed);
@@ -204,53 +215,41 @@ client.on("ready", async () => {
 });
 
 const sendMovieRequest = (interaction, movieName, user = "") => {
-  movieName = movieName.replace(/ /g, "+");
+  MovieManager.sendMovieRequest(movieName)
+    .then((responseData) => {
+      const embed = new Discord.MessageEmbed().setTitle(responseData.Title);
 
-  const requestUrl = movieUrl + movieName;
-
-  makeRequest("GET", requestUrl, function (err, data) {
-    if (err) {
-      console.log("Error receiving movie data" + err);
-    }
-
-    // Begin accessing JSON data here
-    let responseData = JSON.parse(data);
-
-    if (responseData.Title == null && interaction) {
-      reply(interaction, "Sorry, I couldn't find that one");
-      return;
-    }
-
-    const embed = new Discord.MessageEmbed().setTitle(responseData.Title);
-
-    embed.addFields(
-      { name: "Year", value: responseData.Year },
-      { name: "Runtime", value: responseData.Runtime },
-      { name: "IMDB Rating", value: responseData.imdbRating },
-      { name: "Genre", value: responseData.Genre },
-      { name: "Director", value: responseData.Director },
-      { name: "Actors", value: responseData.Actors },
-      { name: "Plot", value: responseData.Plot }
-      //{ name: "Trailer", value: "https://www.youtube.com/watch?v=KfL_V_YaHj8" }
-    );
-
-    embed.setImage(responseData.Poster);
-
-    if (user) {
-      user
-        .send("Hey, you asked me to add this movie to your watchlist:")
-        .then((msg) => msg.delete({ timeout: 10000 }));
-      embed.setFooter(
-        "Hit the ✅ below to remove this movie from your watchlist"
+      embed.addFields(
+        { name: "Year", value: responseData.Year },
+        { name: "Runtime", value: responseData.Runtime },
+        { name: "IMDB Rating", value: responseData.imdbRating },
+        { name: "Genre", value: responseData.Genre },
+        { name: "Director", value: responseData.Director },
+        { name: "Actors", value: responseData.Actors },
+        { name: "Plot", value: responseData.Plot }
+        //{ name: "Trailer", value: "https://www.youtube.com/watch?v=KfL_V_YaHj8" }
       );
-      user.send(embed).catch(console.error);
-      return;
-    }
 
-    embed.setFooter("Hit the 📋 below to add this movie to your watchlist");
+      embed.setImage(responseData.Poster);
 
-    reply(interaction, embed);
-  });
+      if (user) {
+        user
+          .send("Hey, you asked me to add this movie to your watchlist:")
+          .then((msg) => msg.delete({ timeout: 10000 }));
+        embed.setFooter(
+          "Hit the ✅ below to remove this movie from your watchlist"
+        );
+        user.send(embed).catch(console.error);
+        return;
+      }
+
+      embed.setFooter("Hit the 📋 below to add this movie to your watchlist");
+
+      reply(interaction, embed);
+    })
+    .catch((errorMessage) => {
+      reply(interaction, errorMessage);
+    });
 };
 
 client.on("messageReactionAdd", async (reaction, user) => {
@@ -369,22 +368,6 @@ const newPitchforkAlbum = () => {
       });
     })
     .catch(console.error);
-};
-
-const capitalizeFirstLetter = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
-
-const makeRequest = (method, url, done) => {
-  let xhr = new XMLHttpRequest();
-  xhr.open(method, url);
-  xhr.onload = function () {
-    done(null, xhr.response);
-  };
-  xhr.onerror = function () {
-    done(xhr.response);
-  };
-  xhr.send();
 };
 
 const gameboyLoadSaveGame = () => {

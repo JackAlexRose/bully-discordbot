@@ -4,7 +4,7 @@ const PNG = require("pngjs").PNG;
 const msgpack = require("msgpack");
 const { HelperFunctions } = require("./helperFunctions");
 
-const gameboyKeyMap = [
+const GameboyKeyMap = [
   "RIGHT",
   "LEFT",
   "UP",
@@ -50,24 +50,30 @@ class GameboyManager {
     }, 30000);
   }
 
-  pressKey(key, amount, callback) {
-    for (let i = 0; i < 4; i++) {
-      this.gameboy.pressKey(key);
-      this.gameboy.doFrame();
-    }
-
-    this.startFrameProcessing();
-
-    setTimeout(() => {
-      if (amount <= 1) this.takeScreenshot();
-      setTimeout(() => {
-        if (amount <= 1) {
-          callback();
-        } else {
-          this.pressKey(key, amount - 1, callback);
+  pressKey(key, amount) {
+    return new Promise(function (resolve, reject) {
+      try {
+        for (let i = 0; i < 4; i++) {
+          this.gameboy.pressKey(key);
+          this.gameboy.doFrame();
         }
-      }, 100);
-    }, 500);
+
+        this.startFrameProcessing();
+
+        setTimeout(() => {
+          if (amount <= 1) this.takeScreenshot();
+          setTimeout(() => {
+            if (amount <= 1) {
+              resolve("Button press(es) successful");
+            } else {
+              this.pressKey(key, amount - 1, callback);
+            }
+          }, 100);
+        }, 500);
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   takeScreenshot() {
@@ -120,3 +126,4 @@ class GameboyManager {
 }
 
 exports.GameboyManager = GameboyManager;
+exports.GameboyKeyMap = GameboyKeyMap;
