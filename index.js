@@ -436,7 +436,7 @@ const gameboyLoadSaveGame = () => {
     saveGameChannel.messages.fetch({ limit: 1 }).then(messages => {
         const lastMessage = messages.first();
 
-        if (lastMessage.attachments.first()) {
+        if (lastMessage?.attachments?.first()) {
             download(lastMessage.attachments.first().url, 'sramcontents.sav', (err) => {
                 if (err) {
                     console.log("Error loading file, launching gameboy without save data")
@@ -446,21 +446,13 @@ const gameboyLoadSaveGame = () => {
                     const saveData = readFileSync('./sramcontents.sav');
                     gameboy.loadRom(rom, msgpack.unpack(saveData));
                 }
-                startGameboyFrameProcessing();
             })
         }
-        var lastMessageObject;
-        startGameboyFrameProcessing();
-
-        if (lastMessage) {
-            try {
-                lastMessageObject = JSON.parse(lastMessage);
-            }
-            catch (error) {
-                console.log("Failed to parse last message as object");
-                lastMessageObject = undefined;
-            }
+        else {
+            gameboy.loadRom(rom);
         }
+
+        startGameboyFrameProcessing();
     })
 }
 
