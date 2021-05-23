@@ -88,17 +88,17 @@ class GameboyManager {
       HelperFunctions.download(url, "sramcontents.sav", (err) => {
         if (err) {
           console.log("Error loading file, loading rom without save data");
-          this.gameboy.loadRom(rom);
+          this.gameboy.loadRom(this.rom);
         } else {
           console.log("Reading save from file");
           const saveData = fs.readFileSync("./sramcontents.sav");
-          this.gameboy.loadRom(rom, msgpack.unpack(saveData));
+          this.gameboy.loadRom(this.rom, msgpack.unpack(saveData));
         }
         this.startFrameProcessing();
       });
     } else {
       console.log("No attachments found, loading rom without save data");
-      this.gameboy.loadRom(rom);
+      this.gameboy.loadRom(this.rom);
       this.startFrameProcessing();
     }
   }
