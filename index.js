@@ -1,4 +1,4 @@
-var http = require('http');
+var http = require('https');
 
 const Gameboy = require("serverboy");
 const { readFileSync, writeFileSync, writeFile, createWriteStream, readFile } = require("fs");
