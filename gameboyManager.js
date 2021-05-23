@@ -2,7 +2,7 @@ const Gameboy = require("serverboy");
 const fs = require("fs");
 const PNG = require("pngjs").PNG;
 const msgpack = require("msgpack");
-const HelperFunctions = require("./helperFunctions");
+const { HelperFunctions } = require("./helperFunctions");
 
 const gameboyKeyMap = [
   "RIGHT",
