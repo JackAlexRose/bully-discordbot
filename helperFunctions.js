@@ -2,7 +2,7 @@ const fs = require("fs");
 let https = require("https");
 
 class HelperFunctions {
-  download(url, dest, cb) {
+  static download(url, dest, cb) {
     let file = fs.createWriteStream(dest);
     let request = https
       .get(url, (response) => {

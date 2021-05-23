@@ -2,7 +2,7 @@ const Gameboy = require("serverboy");
 const fs = require("fs");
 const PNG = require("pngjs").PNG;
 const msgpack = require("msgpack");
-const { download } = require("./helperFunctions");
+const HelperFunctions = require("./helperFunctions");
 
 const gameboyKeyMap = [
   "RIGHT",
@@ -87,7 +87,7 @@ class GameboyManager {
 
   loadSRAM(url) {
     if (url) {
-      download(url, "sramcontents.sav", (err) => {
+      HelperFunctions.download(url, "sramcontents.sav", (err) => {
         if (err) {
           console.log("Error loading file, loading rom without save data");
           this.gameboy.loadRom(rom);
