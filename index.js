@@ -446,13 +446,13 @@ const gameboyLoadSaveGame = () => {
                     const saveData = readFileSync('./sramcontents.sav');
                     gameboy.loadRom(rom, msgpack.unpack(saveData));
                 }
+                startGameboyFrameProcessing();
             })
         }
         else {
             gameboy.loadRom(rom);
+            startGameboyFrameProcessing();
         }
-
-        startGameboyFrameProcessing();
     })
 }
 
