@@ -199,7 +199,7 @@ client.on("ready", async () => {
   });
 
   newPitchforkAlbum();
-
+  pokemonGameboy.start();
   gameboyLoadSaveGame();
 });
 

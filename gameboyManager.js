@@ -27,8 +27,6 @@ class GameboyManager {
   start() {
     this.rom = fs.readFileSync(this.romPath);
     this.gameboy = new Gameboy();
-
-    this.gameboy.loadRom(rom);
   }
 
   startFrameProcessing() {
