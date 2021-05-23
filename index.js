@@ -142,11 +142,11 @@ client.on("ready", async () => {
       case "pokemon":
         const buttonPressed = args?.button?.toUpperCase().trim();
 
-        let embed = new Discord.MessageEmbed();
+        const pokemonEmbed = new Discord.MessageEmbed();
 
         if (buttonPressed == "HELP") {
-          embed.setTitle("Gameboy User Manual");
-          embed.addFields(
+          pokemonEmbed.setTitle("Gameboy User Manual");
+          pokemonEmbed.addFields(
             {
               name: "Buttons",
               value:
@@ -159,7 +159,7 @@ client.on("ready", async () => {
             }
           );
         } else if (buttonPressed == "SAVE") {
-          embed.addFields({
+          pokemonEmbed.addFields({
             name: "Saving SRAM contents",
             value:
               "Please ensure you have saved ingame before running this command",
@@ -169,12 +169,12 @@ client.on("ready", async () => {
           if (!args.amount) args.amount = 1;
 
           if (args.amount >= 100 || args.amount < 1) {
-            embed.addFields({
+            pokemonEmbed.addFields({
               name: "Invalid amount entered",
               value: "Please enter an amount for key presses between 1 and 100",
             });
           } else {
-            embed.addFields({
+            pokemonEmbed.addFields({
               name: `${buttonPressed} Button Pressed ${args?.amount} times`,
               value: "Processing frames...",
             });
@@ -187,7 +187,7 @@ client.on("ready", async () => {
           }
         }
 
-        reply(interaction, embed);
+        reply(interaction, pokemonEmbed);
         break;
       case "pitchfork":
         newPitchforkAlbum();
