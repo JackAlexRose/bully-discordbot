@@ -142,7 +142,7 @@ client.on("ready", async () => {
       case "pokemon":
         const buttonPressed = args?.button?.toUpperCase().trim();
 
-        const embed = new Discord.MessageEmbed();
+        let embed = new Discord.MessageEmbed();
 
         if (buttonPressed == "HELP") {
           embed.setTitle("Gameboy User Manual");
