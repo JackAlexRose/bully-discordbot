@@ -1,7 +1,10 @@
+var http = require('http');
+
 const Gameboy = require("serverboy");
-const { readFileSync, writeFileSync, writeFile, fstat } = require("fs");
+const { readFileSync, writeFileSync, writeFile, createWriteStream, readFile } = require("fs");
 
 var PNG = require("pngjs").PNG;
+var msgpack = require('msgpack');
 
 var XMLHttpRequest = require('xhr2');
 const p4k = require('pitchfork-bnm');
@@ -180,9 +183,7 @@ client.on('ready', async () => {
 
     newPitchforkAlbum();
 
-    gameboy.loadRom(rom);
-
-    startGameboyFrameProcessing();
+    gameboyLoadSaveGame();
 })
 
 const sendMovieRequest = (interaction, movieName, user = '') => {
@@ -357,6 +358,23 @@ const makeRequest = (method, url, done) => {
     xhr.send();
 }
 
+const download = (url, dest, cb) => {
+    var file = createWriteStream(dest);
+    var request = http.get(url, (response) => {
+        response.pipe(file);
+        file.on('finish', function () {
+            file.close(cb);  // close() is async, call cb after close completes.
+        });
+    }).on('error', function (err) { // Handle errors
+        fs.unlink(dest); // Delete the file async. (But we don't check the result)
+        if (cb) cb(err.message);
+    });
+};
+
+const loadFile = (path) => {
+    return new Promise((res, rej) => readFile(path, (err, data) => err ? rej(err) : res(data)));
+}
+
 const gameboyScreenshot = () => {
     var screen = gameboy.getScreen();
 
@@ -417,7 +435,22 @@ const gameboyLoadSaveGame = () => {
 
     saveGameChannel.messages.fetch({ limit: 1 }).then(messages => {
         const lastMessage = messages.first();
+
+        if (lastMessage.attachments.first()) {
+            download(lastMessage.attachments.first().url, 'sramcontents.sav', (err) => {
+                if (err) {
+                    console.log("Error loading file, launching gameboy without save data")
+                    gameboy.loadRom(rom);
+                }
+                else {
+                    const saveData = readFileSync('./sramcontents.sav');
+                    gameboy.loadRom(rom, msgpack.unpack(saveData));
+                }
+                startGameboyFrameProcessing();
+            })
+        }
         var lastMessageObject;
+        startGameboyFrameProcessing();
 
         if (lastMessage) {
             try {
@@ -439,7 +472,7 @@ const gameboySaveGame = () => {
 
         const saveDataArray = gameboy.getSaveData();
         if (saveDataArray) {
-            writeFile('testfile.txt', Buffer.from(saveDataArray), (err) => {
+            writeFile('sramcontents.sav', msgpack.pack(saveDataArray), (err) => {
                 if (err) {
                     console.log('Error writing to file')
                 }
@@ -448,7 +481,7 @@ const gameboySaveGame = () => {
                     if (lastMessage) {
                         lastMessage.delete();
                     }
-                    saveGameChannel.send({ files: ['./testfile.txt'] });
+                    saveGameChannel.send({ files: ['./sramcontents.sav'] });
                 }
             });
         }
