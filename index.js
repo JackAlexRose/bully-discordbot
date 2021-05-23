@@ -23,9 +23,9 @@ client.on("ready", async () => {
 
   const commands = await getApp(testGuildId).commands.get();
 
-  await getApp(testGuildId).commands.delete("845769388346310698");
-  await getApp(testGuildId).commands.delete("844692501545353227");
-  await getApp(testGuildId).commands.delete("843955495814561793");
+  await getApp(testGuildId).commands("845769388346310698").delete();
+  await getApp(testGuildId).commands("844692501545353227").delete();
+  await getApp(testGuildId).commands("843955495814561793").delete();
 
   console.log(commands);
 
