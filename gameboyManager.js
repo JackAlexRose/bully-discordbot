@@ -117,7 +117,7 @@ class GameboyManager {
           if (err) {
             reject(err);
           } else {
-            resolve("Successfully saved to file");
+            resolve("Successfully saved game to file");
           }
         });
       }

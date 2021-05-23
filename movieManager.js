@@ -12,7 +12,8 @@ class MovieManager {
 
       HelperFunctions.makeRequest("GET", requestUrl, function (err, data) {
         if (err) {
-          console.log("Error receiving movie data" + err);
+          console.log(err);
+          reject("Error receiving movie data");
         }
 
         // Begin accessing JSON data here

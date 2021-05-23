@@ -14,33 +14,28 @@ const client = new Discord.Client({
   partials: ["MESSAGE", "CHANNEL", "REACTION"],
 });
 
-const testGuildId = "713782418057855057";
-const pokemonSaveChannel = "845804600652464158";
-const movieUrl =
-  "http://www.omdbapi.com/?apikey=" + process.env.omdbkey + "&plot=full&t=";
-
 client.on("ready", async () => {
-  console.log("Client is ready.");
+  bullyLogger("Bully is online");
 
-  const commands = await getApp(testGuildId).commands.get();
+  const commands = await getApp(process.env.testguildid).commands.get();
 
   console.log(commands);
 
-  await getApp(testGuildId).commands.post({
+  await getApp(process.env.testguildid).commands.post({
     data: {
       name: "ping",
       description: "A simple ping pong command",
     },
   });
 
-  await getApp(testGuildId).commands.post({
+  await getApp(process.env.testguildid).commands.post({
     data: {
       name: "pitchfork",
       description: "Get best new music from pitchfork",
     },
   });
 
-  await getApp(testGuildId).commands.post({
+  await getApp(process.env.testguildid).commands.post({
     data: {
       name: "embed",
       description: "Displays an embed",
@@ -204,7 +199,7 @@ client.on("ready", async () => {
         newPitchforkAlbum();
         break;
       default:
-        console.log("Command not recognised");
+        bullyLogger("Command not recognised");
         break;
     }
   });
@@ -215,6 +210,7 @@ client.on("ready", async () => {
 });
 
 const sendMovieRequest = (interaction, movieName, user = "") => {
+  bullyLogger(`Fetching movie ${movieName}`);
   MovieManager.sendMovieRequest(movieName)
     .then((responseData) => {
       const embed = new Discord.MessageEmbed().setTitle(responseData.Title);
@@ -248,6 +244,7 @@ const sendMovieRequest = (interaction, movieName, user = "") => {
       reply(interaction, embed);
     })
     .catch((errorMessage) => {
+      bullyLogger(errorMessage);
       reply(interaction, errorMessage);
     });
 };
@@ -269,13 +266,13 @@ client.on("messageReactionAdd", async (reaction, user) => {
   if (reaction.message.author.id == "713014610344804422" && !user.bot) {
     if (reaction._emoji.name === "📋") {
       const movieTitle = reaction.message.embeds[0].title;
-      console.log("Add to watchlist: ", movieTitle, " for: ", user.username);
+      bullyLogger("Add to watchlist: ", movieTitle, " for: ", user.username);
       sendMovieRequest(undefined, movieTitle, user);
     } else if (
       reaction._emoji.name === "✅" &&
       reaction.message.channel.type === "dm"
     ) {
-      console.log("Removing from dms for: ", user.username);
+      console.log("Removing a movie from dms for: ", user.username);
       reaction.message.delete();
     }
   }
@@ -337,7 +334,7 @@ const createApiMessage = async (interaction, content) => {
 };
 
 const newPitchforkAlbum = () => {
-  const myGuild = client.guilds.cache.get(testGuildId);
+  const myGuild = client.guilds.cache.get(process.env.testguildid);
   const memoryChannel = myGuild.channels.cache.get("845043427761717258");
 
   memoryChannel.messages
@@ -363,7 +360,7 @@ const newPitchforkAlbum = () => {
           );
           memoryChannel.send(JSON.stringify(trackInfoObject));
         } else {
-          console.log("Pitchfork album has already been posted, skipping");
+          bullyLogger("Pitchfork album has already been posted, skipping");
         }
       });
     })
@@ -390,19 +387,28 @@ const gameboySaveGame = async () => {
 
   try {
     const response = await pokemonGameboy.saveSRAM();
-    console.log(response);
+    bullyLogger(response);
     if (lastMessage) {
       lastMessage.delete();
     }
     saveGameChannel.send({ files: ["./sramcontents.sav"] });
   } catch (error) {
-    console.log("Error writing to file");
+    bullyLogger("Error writing to file");
   }
 };
 
 const getSaveGameChannel = () => {
-  const myGuild = client.guilds.cache.get(testGuildId);
-  return myGuild.channels.cache.get(pokemonSaveChannel);
+  const myGuild = client.guilds.cache.get(process.env.testguildid);
+  return myGuild.channels.cache.get(process.env.pokemonsavechannel);
+};
+
+const bullyLogger = (log) => {
+  console.log(log);
+
+  const myGuild = client.guilds.cache.get(process.env.bulldogsguildid);
+  const loggerChannel = myGuild.channels.cache.get(bulldogsloggerid);
+
+  loggerChannel.send(log);
 };
 
 client.login(process.env.token);
