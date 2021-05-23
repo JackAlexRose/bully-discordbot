@@ -406,7 +406,9 @@ const bullyLogger = (log) => {
   console.log(log);
 
   const myGuild = client.guilds.cache.get(process.env.bulldogsguildid);
-  const loggerChannel = myGuild.channels.cache.get(bulldogsloggerid);
+  const loggerChannel = myGuild.channels.cache.get(
+    process.env.bulldogsloggerid
+  );
 
   loggerChannel.send(log);
 };
