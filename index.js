@@ -439,10 +439,11 @@ const gameboyLoadSaveGame = () => {
         if (lastMessage?.attachments?.first()) {
             download(lastMessage.attachments.first().url, 'sramcontents.sav', (err) => {
                 if (err) {
-                    console.log("Error loading file, launching gameboy without save data")
+                    console.log("Error loading file, loading rom without save data")
                     gameboy.loadRom(rom);
                 }
                 else {
+                    console.log("Reading save from file");
                     const saveData = readFileSync('./sramcontents.sav');
                     gameboy.loadRom(rom, msgpack.unpack(saveData));
                 }
@@ -450,6 +451,7 @@ const gameboyLoadSaveGame = () => {
             })
         }
         else {
+            console.log("No attachments found, loading rom without save data");
             gameboy.loadRom(rom);
             startGameboyFrameProcessing();
         }
