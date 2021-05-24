@@ -51,7 +51,7 @@ class GameboyManager {
   }
 
   pressKey(key, amount) {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       try {
         for (let i = 0; i < 4; i++) {
           this.gameboy.pressKey(key);
