@@ -66,7 +66,7 @@ class GameboyManager {
             if (amount <= 1) {
               resolve("Button press(es) successful");
             } else {
-              this.pressKey(key, amount - 1, callback);
+              this.pressKey(key, amount - 1);
             }
           }, 100);
         }, 500);
